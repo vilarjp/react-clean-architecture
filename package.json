@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/vilarjp/react-clean-architecture",
   "author": "João Paulo Vilar",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "git-commit-msg-linter": "^2.4.2"
+  }
 }
