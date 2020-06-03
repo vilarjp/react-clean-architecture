@@ -6,12 +6,15 @@
   "author": "João Paulo Vilar",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^25.2.3",
     "@types/node": "^14.0.9",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "git-commit-msg-linter": "^2.4.2",
     "husky": "^4.2.5",
+    "jest": "^26.0.1",
     "lint-staged": "^10.2.7",
+    "ts-jest": "^26.1.0",
     "typescript": "^3.9.3"
   }
 }
