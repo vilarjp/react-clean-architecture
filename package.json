@@ -6,6 +6,8 @@
   "author": "João Paulo Vilar",
   "license": "MIT",
   "devDependencies": {
-    "git-commit-msg-linter": "^2.4.2"
+    "@types/node": "^14.0.9",
+    "git-commit-msg-linter": "^2.4.2",
+    "typescript": "^3.9.3"
   }
 }
