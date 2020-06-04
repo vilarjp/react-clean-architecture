@@ -14,7 +14,9 @@
   },
   "plugins": ["react", "cypress"],
   "parserOptions": {
-    "project": "./tsconfig-eslint.json"
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
   },
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
