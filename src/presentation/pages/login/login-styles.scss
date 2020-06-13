@@ -1,0 +1,138 @@
+@import '../../styles/colors.scss';
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+* {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+body {
+  background: $background;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: $primary;
+    border-top: 40px solid $primaryDark;
+
+    h1 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 70px;
+      color: $white;
+      line-height: 51px;
+    }
+
+    h2 {
+      color: $white;
+      margin-bottom: 40px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 400px;
+    background: $white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 1px 3px -1px $black;
+
+    h3 {
+      color: $primaryDark;
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .inputWrap {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      input {
+        flex-grow: 1;
+      }
+
+      .status {
+        position: absolute;
+        right: 5px;
+        cursor: help;
+      }
+    }
+
+    .submit {
+      margin-top: 32px;
+
+      .spinner {
+        div {
+          background: $white;
+        }
+      }
+    }
+
+    .link {
+      text-align: center;
+      color: $primary;
+      margin-top: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.5s;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  .footer {
+    background: $primary;
+    height: 48px;
+  }
+}
+
+input {
+  border: 1px solid $primaryLight;
+  border-radius: 4px;
+  line-height: 40px;
+  padding: 0 35px 0 8px;
+
+  &:focus {
+    outline-color: $primaryLight;
+  }
+}
+
+// #####
+
+button {
+  background: $primary;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.5s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
