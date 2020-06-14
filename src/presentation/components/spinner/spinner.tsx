@@ -4,12 +4,13 @@ import Styles from './spinner-styles.scss'
 type Props = HTMLAttributes<HTMLDivElement>
 
 const Spinner: React.FC<Props> = (props: Props) => {
+  const { className } = props
   return (
-    <div className={`${Styles.spinner} ${props.className}`}>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className={`${Styles.spinner} ${className}`}>
+      <div />
+      <div />
+      <div />
+      <div />
     </div>
   )
 }

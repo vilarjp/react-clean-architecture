@@ -1,4 +1,3 @@
-import { RemoteAuthentication } from './remote-authentication'
 import { HttpPostClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { mockAuthentication, mockAccountModel } from '@/domain/test'
@@ -6,6 +5,7 @@ import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
 import { AuthenticationParams } from '@/domain/usecases'
 import { AccountModel } from '@/domain/models'
 import faker from 'faker'
+import { RemoteAuthentication } from './remote-authentication'
 
 type SutTypes = {
   httpPostClientSpy: HttpPostClientSpy<AuthenticationParams, AccountModel>
