@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react'
-import Styles from './spinner-styles.scss'
+import Styles from './Spinner-styles.scss'
 
 type Props = HTMLAttributes<HTMLDivElement>
 

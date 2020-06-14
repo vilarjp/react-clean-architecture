@@ -1,17 +1,14 @@
 import React from 'react'
 import { FiAlertCircle } from 'react-icons/fi'
-import Spinner from '@/presentation/components/spinner/spinner'
-import Styles from './login-styles.scss'
+import LoginHeader from '@/presentation/components/LoginHeader/LoginHeader'
+import Spinner from '@/presentation/components/Spinner/Spinner'
+import Footer from '@/presentation/components/Footer/Footer'
+import Styles from './Login-styles.scss'
 
 const Login: React.FC = () => {
   return (
     <div className={Styles.login}>
-      <header className={Styles.header}>
-        <h1>TPA</h1>
-        <h2>
-          TP Advisor - Encontre as melhores paradas entre as suas viagens!
-        </h2>
-      </header>
+      <LoginHeader />
       <form className={Styles.form}>
         <h3>Seja bem vindo</h3>
         <div className={Styles.inputWrap}>
@@ -34,7 +31,7 @@ const Login: React.FC = () => {
           Criar conta
         </a>
       </form>
-      <footer className={Styles.footer} />
+      <Footer />
     </div>
   )
 }
