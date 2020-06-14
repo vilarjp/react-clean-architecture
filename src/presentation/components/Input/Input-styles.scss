@@ -7,14 +7,14 @@
   position: relative;
 
   input {
-    border: 1px solid $primaryDark;
+    border: 1px solid $primary;
     border-radius: 4px;
     line-height: 40px;
     padding: 0 35px 0 8px;
     flex-grow: 1;
 
     &:focus {
-      outline-color: $primaryDark;
+      outline-color: $primary;
     }
   }
 

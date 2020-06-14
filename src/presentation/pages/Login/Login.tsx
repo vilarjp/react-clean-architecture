@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FiAlertCircle } from 'react-icons/fi'
+import { FiAlertOctagon } from 'react-icons/fi'
 import { LoginHeader, Footer, Input, Button } from '@/presentation/components'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 
@@ -26,13 +26,13 @@ const Login: React.FC = () => {
             type="email"
             name="email"
             placeholder="Digite seu e-mail"
-            icon={FiAlertCircle}
+            icon={FiAlertOctagon}
           />
           <Input
             type="password"
             name="password"
             placeholder="Digite sua senha"
-            icon={FiAlertCircle}
+            icon={FiAlertOctagon}
           />
           <Button type="submit" className={Styles.buttonWrapper}>
             Entrar
