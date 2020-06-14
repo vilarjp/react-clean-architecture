@@ -1,9 +1,7 @@
 import React from 'react'
 import { FiAlertCircle } from 'react-icons/fi'
-import LoginHeader from '@/presentation/components/LoginHeader/LoginHeader'
-import Spinner from '@/presentation/components/Spinner/Spinner'
-import Footer from '@/presentation/components/Footer/Footer'
-import Input from '@/presentation/components/Input/Input'
+import { LoginHeader, Footer, Input, Button } from '@/presentation/components'
+
 import Styles from './Login-styles.scss'
 
 const Login: React.FC = () => {
@@ -24,10 +22,9 @@ const Login: React.FC = () => {
           placeholder="Digite sua senha"
           icon={FiAlertCircle}
         />
-        <button type="submit" className={Styles.submit}>
+        <Button type="submit" className={Styles.buttonWrapper}>
           Entrar
-          <Spinner className={Styles.spinner} />
-        </button>
+        </Button>
         <a href="/cadastro" className={Styles.link}>
           Criar conta
         </a>

@@ -2,16 +2,15 @@ import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import { IconBaseProps } from 'react-icons'
 import Styles from './Input-styles.scss'
 
-interface InputProps
+interface Props
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  name: string
   icon?: React.ComponentType<IconBaseProps>
 }
 
-const Input: React.FC<InputProps> = ({ icon: Icon, ...rest }) => {
+const Input: React.FC<Props> = ({ icon: Icon, ...rest }) => {
   return (
     <div className={Styles.inputWrap}>
       <input {...rest} />
