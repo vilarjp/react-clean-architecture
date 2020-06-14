@@ -1,6 +1,11 @@
 /* eslint-disable react/button-has-type */
-import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+import React, {
+  DetailedHTMLProps,
+  ButtonHTMLAttributes,
+  useContext
+} from 'react'
 import Spinner from '@/presentation/components/Spinner/Spinner'
+import FormContext from '@/presentation/contexts/Form/FormContext'
 import Styles from './Button-styles.scss'
 import Themes from './Button-themes.scss'
 
@@ -21,15 +26,17 @@ const Button: React.FC<Props> = ({
   ...rest
 }) => {
   const buttonTheme = Themes[theme]
+  const { isLoading } = useContext(FormContext)
 
   return (
     <button
+      data-testid="button-wrap"
       {...rest}
       type={rest.type ? rest.type : 'button'}
-      className={`${Styles.button} ${className} ${buttonTheme || ''} `}
-      disabled={rest.disabled || loading}
+      className={`${Styles.buttonWrap} ${className} ${buttonTheme || ''} `}
+      disabled={rest.disabled || loading || isLoading}
     >
-      {loading ? <Spinner className={Styles.spinner} /> : children}
+      {loading || isLoading ? <Spinner className={Styles.spinner} /> : children}
     </button>
   )
 }
