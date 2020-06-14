@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FiAlertOctagon } from 'react-icons/fi'
+import { FiMail, FiLock } from 'react-icons/fi'
 import { LoginHeader, Footer, Input, Button } from '@/presentation/components'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 
@@ -7,13 +7,15 @@ import Styles from './Login-styles.scss'
 
 type StateProps = {
   isLoading: boolean
-  errorMessage: string
+  errorEmail: string
+  errorPassword: string
 }
 
 const Login: React.FC = () => {
   const [state] = useState<StateProps>({
     isLoading: false,
-    errorMessage: ''
+    errorEmail: '',
+    errorPassword: ''
   })
 
   return (
@@ -26,13 +28,15 @@ const Login: React.FC = () => {
             type="email"
             name="email"
             placeholder="Digite seu e-mail"
-            icon={FiAlertOctagon}
+            icon={FiMail}
+            errorMessage={state.errorEmail}
           />
           <Input
             type="password"
             name="password"
             placeholder="Digite sua senha"
-            icon={FiAlertOctagon}
+            icon={FiLock}
+            errorMessage={state.errorPassword}
           />
           <Button type="submit" className={Styles.buttonWrapper}>
             Entrar
