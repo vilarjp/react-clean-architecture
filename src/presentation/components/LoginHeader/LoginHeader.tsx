@@ -4,8 +4,8 @@ import Styles from './LoginHeader-styles.scss'
 const LoginHeader: React.FC = () => {
   return (
     <header className={Styles.header}>
-      <h1>TPA</h1>
-      <h2>TP Advisor - Encontre as melhores paradas entre as suas viagens!</h2>
+      <h1>Pare Aqui</h1>
+      <h2>Pare Aqui - Encontre as melhores paradas entre as suas viagens!</h2>
     </header>
   )
 }
