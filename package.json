@@ -13,6 +13,7 @@
     "test:ci": "yarn test --coverage"
   },
   "devDependencies": {
+    "@testing-library/react": "^10.2.1",
     "@types/axios": "^0.14.0",
     "@types/faker": "^4.1.12",
     "@types/jest": "^25.2.3",
