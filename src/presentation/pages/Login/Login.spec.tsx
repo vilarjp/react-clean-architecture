@@ -51,7 +51,7 @@ describe('Login Page', () => {
     expect(passwordInput.childElementCount).toBe(1)
   })
 
-  it('should call validation with correct e-mail', () => {
+  it('should call validation with correct fields', () => {
     const { validationSpy, sut } = makeSut()
 
     const emailInput = sut.getByTestId('email-input')
@@ -59,10 +59,6 @@ describe('Login Page', () => {
     expect(validationSpy.input).toEqual({
       email: 'any_email'
     })
-  })
-
-  it('should call validation with correct password', () => {
-    const { validationSpy, sut } = makeSut()
 
     const passwordInput = sut.getByTestId('password-input')
     fireEvent.input(passwordInput, { target: { value: 'any_password' } })
