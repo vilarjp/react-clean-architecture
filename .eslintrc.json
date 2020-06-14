@@ -52,6 +52,8 @@
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
     "class-methods-use-this": "off",
-    "@typescript-eslint/no-var-requires": "off"
+    "@typescript-eslint/no-var-requires": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off"
   }
 }

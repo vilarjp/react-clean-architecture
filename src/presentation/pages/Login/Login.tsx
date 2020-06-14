@@ -3,6 +3,7 @@ import { FiAlertCircle } from 'react-icons/fi'
 import LoginHeader from '@/presentation/components/LoginHeader/LoginHeader'
 import Spinner from '@/presentation/components/Spinner/Spinner'
 import Footer from '@/presentation/components/Footer/Footer'
+import Input from '@/presentation/components/Input/Input'
 import Styles from './Login-styles.scss'
 
 const Login: React.FC = () => {
@@ -11,18 +12,18 @@ const Login: React.FC = () => {
       <LoginHeader />
       <form className={Styles.form}>
         <h3>Seja bem vindo</h3>
-        <div className={Styles.inputWrap}>
-          <input type="email" name="email" placeholder="Digite seu e-mail" />
-          <FiAlertCircle size={20} className={Styles.status} />
-        </div>
-        <div className={Styles.inputWrap}>
-          <input
-            type="password"
-            name="password"
-            placeholder="Digite sua senha"
-          />
-          <FiAlertCircle size={20} className={Styles.status} />
-        </div>
+        <Input
+          type="email"
+          name="email"
+          placeholder="Digite seu e-mail"
+          icon={FiAlertCircle}
+        />
+        <Input
+          type="password"
+          name="password"
+          placeholder="Digite sua senha"
+          icon={FiAlertCircle}
+        />
         <button type="submit" className={Styles.submit}>
           Entrar
           <Spinner className={Styles.spinner} />
