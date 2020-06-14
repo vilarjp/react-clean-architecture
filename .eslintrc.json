@@ -54,6 +54,12 @@
     "class-methods-use-this": "off",
     "@typescript-eslint/no-var-requires": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "@typescript-eslint/ban-types": [
+      "off",
+      {
+        "types": ["object"]
+      }
+    ]
   }
 }

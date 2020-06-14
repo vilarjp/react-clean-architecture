@@ -1,27 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FiMail, FiLock } from 'react-icons/fi'
 import { LoginHeader, Footer, Input, Button } from '@/presentation/components'
+import { Validation } from '@/presentation/protocols/validation'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 
 import Styles from './Login-styles.scss'
 
-type StateProps = {
-  isLoading: boolean
-  errorEmail: string
-  errorPassword: string
+type Props = {
+  validation: Validation
 }
 
-const Login: React.FC = () => {
-  const [state] = useState<StateProps>({
-    isLoading: false,
+type StateProps = {
+  email: string
+  errorEmail: string
+  password: string
+  errorPassword: string
+  isLoading: boolean
+}
+
+const Login: React.FC<Props> = ({ validation }: Props) => {
+  const [state, setState] = useState<StateProps>({
+    email: '',
     errorEmail: '',
-    errorPassword: ''
+    password: '',
+    errorPassword: '',
+    isLoading: false
   })
+
+  useEffect(() => {
+    validation.validate({ email: state.email })
+  }, [validation, state.email])
+
+  useEffect(() => {
+    validation.validate({ password: state.password })
+  }, [validation, state.password])
 
   return (
     <div className={Styles.login}>
       <LoginHeader />
-      <FormContext.Provider value={state}>
+      <FormContext.Provider value={{ state, setState }}>
         <form className={Styles.form}>
           <h3>Seja bem vindo</h3>
           <Input
