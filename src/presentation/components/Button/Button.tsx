@@ -26,8 +26,8 @@ const Button: React.FC<Props> = ({
   ...rest
 }) => {
   const buttonTheme = Themes[theme]
-  const { loading: loadingContext } = useContext(FormContext)
-  const isLoading = !!(loading || loadingContext)
+  const { state } = useContext(FormContext)
+  const isLoading = !!(loading || state.loading)
   const isDisabled = !!(rest.disabled || isLoading)
 
   return (

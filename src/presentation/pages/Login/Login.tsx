@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { FiMail, FiLock } from 'react-icons/fi'
 import { LoginHeader, Footer, Input, Button } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
@@ -41,11 +41,22 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     }))
   }, [validation, state.password])
 
+  const onSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>): void => {
+      event.preventDefault()
+      setState(prevState => ({
+        ...prevState,
+        loading: true
+      }))
+    },
+    []
+  )
+
   return (
     <div className={Styles.login}>
       <LoginHeader />
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form}>
+        <form className={Styles.form} onSubmit={onSubmit}>
           <h3>Seja bem vindo</h3>
           <Input
             type="email"

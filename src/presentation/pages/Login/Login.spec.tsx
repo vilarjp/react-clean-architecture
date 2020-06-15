@@ -146,4 +146,24 @@ describe('Login Page', () => {
     const buttonWrap = sut.getByTestId('button-wrap') as HTMLButtonElement
     expect(buttonWrap.disabled).toBe(false)
   })
+
+  it('should display spinner on submit', () => {
+    const { sut } = makeSut()
+
+    const emailInput = sut.getByTestId('email-input')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+
+    const passwordInput = sut.getByTestId('password-input')
+    fireEvent.input(passwordInput, {
+      target: { value: faker.internet.password() }
+    })
+
+    const buttonWrap = sut.getByTestId('button-wrap') as HTMLButtonElement
+    fireEvent.click(buttonWrap)
+
+    const spinnerLoading = sut.getByTestId('spinner-loading')
+    expect(spinnerLoading).toBeTruthy()
+    expect(buttonWrap.childElementCount).toBe(1)
+    expect(buttonWrap.disabled).toBe(true)
+  })
 })
