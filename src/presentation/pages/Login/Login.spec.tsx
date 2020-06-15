@@ -34,11 +34,13 @@ describe('Login Page', () => {
     expect(buttonWrap.childElementCount).toBe(0)
     expect(buttonWrap.textContent).toBe('Entrar')
 
-    const emailInput = sut.getByTestId('email-inputWrapper')
-    expect(emailInput.childElementCount).toBe(1)
+    const emailInputWrapper = sut.getByTestId('email-inputWrapper')
+    expect(emailInputWrapper.childElementCount).toBe(1)
+    expect(sut.queryByTestId('email-error')).toBeNull()
 
-    const passwordInput = sut.getByTestId('password-inputWrapper')
-    expect(passwordInput.childElementCount).toBe(1)
+    const passwordInputWrapper = sut.getByTestId('password-inputWrapper')
+    expect(passwordInputWrapper.childElementCount).toBe(1)
+    expect(sut.queryByTestId('password-error')).toBeNull()
   })
 
   it('should call validation with correct e-mail', () => {
@@ -95,5 +97,33 @@ describe('Login Page', () => {
 
     const passwordInputWrapper = sut.getByTestId('password-inputWrapper')
     expect(passwordInputWrapper.childElementCount).toBe(2)
+  })
+
+  it('should display valid e-mail state if validation succeeds', () => {
+    const { validationSpy, sut } = makeSut()
+
+    validationSpy.errorMessage = null
+
+    const emailInput = sut.getByTestId('email-input')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+
+    const emailInputWrapper = sut.getByTestId('email-inputWrapper')
+    expect(emailInputWrapper.childElementCount).toBe(1)
+    expect(sut.queryByTestId('email-error')).toBeNull()
+  })
+
+  it('should display valid password state if validation succeeds', () => {
+    const { validationSpy, sut } = makeSut()
+
+    validationSpy.errorMessage = null
+
+    const passwordInput = sut.getByTestId('password-input')
+    fireEvent.input(passwordInput, {
+      target: { value: faker.internet.email() }
+    })
+
+    const passwordInputWrapper = sut.getByTestId('password-inputWrapper')
+    expect(passwordInputWrapper.childElementCount).toBe(1)
+    expect(sut.queryByTestId('password-error')).toBeNull()
   })
 })
