@@ -104,12 +104,14 @@ describe('Login Page', () => {
 
     validationSpy.errorMessage = null
 
-    const emailInput = sut.getByTestId('email-input')
-    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    const email = faker.internet.email()
+    const emailInput = sut.getByTestId('email-input') as HTMLInputElement
+    fireEvent.input(emailInput, { target: { value: email } })
 
     const emailInputWrapper = sut.getByTestId('email-inputWrapper')
     expect(emailInputWrapper.childElementCount).toBe(1)
     expect(sut.queryByTestId('email-error')).toBeNull()
+    expect(emailInput.value).toBe(email)
   })
 
   it('should display valid password state if validation succeeds', () => {
@@ -117,13 +119,32 @@ describe('Login Page', () => {
 
     validationSpy.errorMessage = null
 
-    const passwordInput = sut.getByTestId('password-input')
+    const password = faker.internet.password()
+    const passwordInput = sut.getByTestId('password-input') as HTMLInputElement
     fireEvent.input(passwordInput, {
-      target: { value: faker.internet.email() }
+      target: { value: password }
     })
 
     const passwordInputWrapper = sut.getByTestId('password-inputWrapper')
     expect(passwordInputWrapper.childElementCount).toBe(1)
     expect(sut.queryByTestId('password-error')).toBeNull()
+    expect(passwordInput.value).toBe(password)
+  })
+
+  it('should enable submit button if form validation is valid', () => {
+    const { validationSpy, sut } = makeSut()
+
+    validationSpy.errorMessage = null
+
+    const emailInput = sut.getByTestId('email-input')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+
+    const passwordInput = sut.getByTestId('password-input')
+    fireEvent.input(passwordInput, {
+      target: { value: faker.internet.password() }
+    })
+
+    const buttonWrap = sut.getByTestId('button-wrap') as HTMLButtonElement
+    expect(buttonWrap.disabled).toBe(false)
   })
 })

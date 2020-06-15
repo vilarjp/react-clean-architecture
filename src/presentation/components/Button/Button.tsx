@@ -26,7 +26,9 @@ const Button: React.FC<Props> = ({
   ...rest
 }) => {
   const buttonTheme = Themes[theme]
-  const { isLoading } = useContext(FormContext)
+  const { loading: loadingContext } = useContext(FormContext)
+  const isLoading = !!(loading || loadingContext)
+  const isDisabled = !!(rest.disabled || isLoading)
 
   return (
     <button
@@ -34,9 +36,9 @@ const Button: React.FC<Props> = ({
       {...rest}
       type={rest.type ? rest.type : 'button'}
       className={`${Styles.buttonWrap} ${className} ${buttonTheme || ''} `}
-      disabled={rest.disabled || loading || isLoading}
+      disabled={isDisabled}
     >
-      {loading || isLoading ? <Spinner className={Styles.spinner} /> : children}
+      {isLoading ? <Spinner className={Styles.spinner} /> : children}
     </button>
   )
 }

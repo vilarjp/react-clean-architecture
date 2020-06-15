@@ -15,7 +15,7 @@ type StateProps = {
   emailError: string
   password: string
   passwordError: string
-  isLoading: boolean
+  loading: boolean
 }
 
 const Login: React.FC<Props> = ({ validation }: Props) => {
@@ -24,7 +24,7 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     emailError: '',
     password: '',
     passwordError: '',
-    isLoading: false
+    loading: false
   })
 
   useEffect(() => {
@@ -59,7 +59,11 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
             placeholder="Digite sua senha"
             icon={FiLock}
           />
-          <Button type="submit" className={Styles.buttonWrapper}>
+          <Button
+            type="submit"
+            disabled={!!state.emailError || !!state.passwordError}
+            className={Styles.buttonWrapper}
+          >
             Entrar
           </Button>
           <a href="/cadastro" className={Styles.link}>
