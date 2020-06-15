@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { FiMail, FiLock } from 'react-icons/fi'
 import {
   LoginHeader,
@@ -10,7 +11,6 @@ import {
 import { Validation } from '@/presentation/protocols/validation'
 import { Authentication } from '@/domain/usecases'
 import FormContext from '@/presentation/contexts/Form/FormContext'
-
 import Styles from './Login-styles.scss'
 
 type Props = {
@@ -36,6 +36,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     loading: false,
     error: ''
   })
+  const history = useHistory()
 
   useEffect(() => {
     setState(prevState => ({
@@ -60,10 +61,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           ...prevState,
           loading: true
         }))
-        await authentication.auth({
+        const account = await authentication.auth({
           email: state.email,
           password: state.password
         })
+        localStorage.setItem('accessToken', account.accessToken)
+        history.replace('/')
       } catch (err) {
         setState(prevState => ({
           ...prevState,
@@ -78,7 +81,8 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
       state.password,
       state.loading,
       state.emailError,
-      state.passwordError
+      state.passwordError,
+      history
     ]
   )
 
@@ -112,9 +116,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
             Entrar
           </Button>
           <Modal />
-          <a href="/cadastro" className={Styles.link}>
+          <Link data-testid="signup-link" to="/signup" className={Styles.link}>
             Criar conta
-          </a>
+          </Link>
         </form>
       </FormContext.Provider>
       <Footer />

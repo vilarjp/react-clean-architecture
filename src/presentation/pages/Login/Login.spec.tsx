@@ -1,10 +1,13 @@
 import React from 'react'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import {
   render,
   RenderResult,
   fireEvent,
   waitFor
 } from '@testing-library/react'
+import 'jest-localstorage-mock'
 import faker from 'faker'
 import { ValidationSpy, AuthenticationSpy } from '@/presentation/test'
 import { InvalidCredentialsError } from '@/domain/errors'
@@ -20,12 +23,16 @@ type SutTypes = {
   authenticationSpy: AuthenticationSpy
 }
 
+const history = createMemoryHistory({ initialEntries: ['/login'] })
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy()
   const authenticationSpy = new AuthenticationSpy()
   validationSpy.errorMessage = params?.validationError
   const sut = render(
-    <Login validation={validationSpy} authentication={authenticationSpy} />
+    <Router history={history}>
+      <Login validation={validationSpy} authentication={authenticationSpy} />
+    </Router>
   )
 
   return {
@@ -112,6 +119,10 @@ const expectFieldValidationSuccess = (
 }
 
 describe('Login Page', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
   it('should start with initial state', () => {
     const { sut } = makeSut()
 
@@ -245,5 +256,29 @@ describe('Login Page', () => {
 
     const buttonWrap = sut.getByTestId('button-wrap')
     expect(buttonWrap.childElementCount).toBe(0)
+  })
+
+  it('should add accessToken to localstorage on authentication success', async () => {
+    const { sut, authenticationSpy } = makeSut()
+
+    simulateValidSubmit(sut)
+    await waitFor(() => sut.getByTestId('form-login'))
+
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'accessToken',
+      authenticationSpy.account.accessToken
+    )
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
+  })
+
+  it('should go to signup page', async () => {
+    const { sut } = makeSut()
+
+    const register = sut.getByTestId('signup-link')
+    fireEvent.click(register)
+
+    expect(history.length).toBe(2)
+    expect(history.location.pathname).toBe('/signup')
   })
 })
