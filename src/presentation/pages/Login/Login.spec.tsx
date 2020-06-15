@@ -218,4 +218,14 @@ describe('Login Page', () => {
 
     expect(authenticationSpy.callsCount).toBe(1)
   })
+
+  it('should not call authentication with invalid fields', async () => {
+    const validationError = faker.random.words()
+    const { sut, authenticationSpy } = makeSut({ validationError })
+
+    populateEmailField(sut)
+    fireEvent.submit(sut.getByTestId('form-login'))
+
+    expect(authenticationSpy.callsCount).toBe(0)
+  })
 })

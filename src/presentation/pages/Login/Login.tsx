@@ -46,6 +46,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
       event.preventDefault()
+      if (state.loading || state.emailError || state.passwordError) return
       setState(prevState => ({
         ...prevState,
         loading: true
@@ -55,14 +56,25 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         password: state.password
       })
     },
-    [authentication, state.email, state.password]
+    [
+      authentication,
+      state.email,
+      state.password,
+      state.loading,
+      state.emailError,
+      state.passwordError
+    ]
   )
 
   return (
     <div className={Styles.login}>
       <LoginHeader />
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form} onSubmit={onSubmit}>
+        <form
+          data-testid="form-login"
+          className={Styles.form}
+          onSubmit={onSubmit}
+        >
           <h3>Seja bem vindo</h3>
           <Input
             type="email"
