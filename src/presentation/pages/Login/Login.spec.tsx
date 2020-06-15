@@ -5,9 +5,23 @@ import {
   fireEvent,
   cleanup
 } from '@testing-library/react'
-import { ValidationSpy } from '@/presentation/test'
 import faker from 'faker'
+import { ValidationSpy } from '@/presentation/test'
+import { Authentication, AuthenticationParams } from '@/domain/usecases'
+import { AccountModel } from '@/domain/models'
+import { mockAccountModel } from '@/domain/test'
 import Login from './Login'
+
+class AuthenticationSpy implements Authentication {
+  account = mockAccountModel()
+
+  params: AuthenticationParams
+
+  async auth(params: AuthenticationParams): Promise<AccountModel> {
+    this.params = params
+    return Promise.resolve(this.account)
+  }
+}
 
 type SutParams = {
   validationError: string
@@ -16,16 +30,21 @@ type SutParams = {
 type SutTypes = {
   validationSpy: ValidationSpy
   sut: RenderResult
+  authenticationSpy: AuthenticationSpy
 }
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy()
+  const authenticationSpy = new AuthenticationSpy()
   validationSpy.errorMessage = params?.validationError
-  const sut = render(<Login validation={validationSpy} />)
+  const sut = render(
+    <Login validation={validationSpy} authentication={authenticationSpy} />
+  )
 
   return {
     validationSpy,
-    sut
+    sut,
+    authenticationSpy
   }
 }
 
@@ -165,5 +184,27 @@ describe('Login Page', () => {
     expect(spinnerLoading).toBeTruthy()
     expect(buttonWrap.childElementCount).toBe(1)
     expect(buttonWrap.disabled).toBe(true)
+  })
+
+  it('should call authentication with correct values', async () => {
+    const { sut, authenticationSpy } = makeSut()
+
+    const emailInput = sut.getByTestId('email-input')
+    const email = faker.internet.email()
+    fireEvent.input(emailInput, { target: { value: email } })
+
+    const passwordInput = sut.getByTestId('password-input')
+    const password = faker.internet.password()
+    fireEvent.input(passwordInput, {
+      target: { value: password }
+    })
+
+    const buttonWrap = sut.getByTestId('button-wrap')
+    fireEvent.click(buttonWrap)
+
+    expect(authenticationSpy.params).toEqual({
+      email,
+      password
+    })
   })
 })

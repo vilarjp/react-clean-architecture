@@ -2,12 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { FiMail, FiLock } from 'react-icons/fi'
 import { LoginHeader, Footer, Input, Button } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
+import { Authentication } from '@/domain/usecases'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 
 import Styles from './Login-styles.scss'
 
 type Props = {
   validation: Validation
+  authentication: Authentication
 }
 
 type StateProps = {
@@ -18,7 +20,7 @@ type StateProps = {
   loading: boolean
 }
 
-const Login: React.FC<Props> = ({ validation }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const [state, setState] = useState<StateProps>({
     email: '',
     emailError: '',
@@ -42,14 +44,18 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   }, [validation, state.password])
 
   const onSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>): void => {
+    async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
       event.preventDefault()
       setState(prevState => ({
         ...prevState,
         loading: true
       }))
+      await authentication.auth({
+        email: state.email,
+        password: state.password
+      })
     },
-    []
+    [authentication, state.email, state.password]
   )
 
   return (
