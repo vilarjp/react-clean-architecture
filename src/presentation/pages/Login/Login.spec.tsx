@@ -3,10 +3,11 @@ import {
   render,
   RenderResult,
   fireEvent,
-  cleanup
+  waitFor
 } from '@testing-library/react'
 import faker from 'faker'
 import { ValidationSpy, AuthenticationSpy } from '@/presentation/test'
+import { InvalidCredentialsError } from '@/domain/errors'
 import Login from './Login'
 
 type SutParams = {
@@ -111,8 +112,6 @@ const expectFieldValidationSuccess = (
 }
 
 describe('Login Page', () => {
-  afterEach(cleanup)
-
   it('should start with initial state', () => {
     const { sut } = makeSut()
 
@@ -197,7 +196,7 @@ describe('Login Page', () => {
     expect(buttonWrap.disabled).toBe(true)
   })
 
-  it('should call authentication with correct values', async () => {
+  it('should call authentication with correct values', () => {
     const { sut, authenticationSpy } = makeSut()
 
     const email = faker.internet.email()
@@ -210,7 +209,7 @@ describe('Login Page', () => {
     })
   })
 
-  it('should call authentication only once', async () => {
+  it('should call authentication only once', () => {
     const { sut, authenticationSpy } = makeSut()
 
     simulateValidSubmit(sut)
@@ -219,7 +218,7 @@ describe('Login Page', () => {
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
-  it('should not call authentication with invalid fields', async () => {
+  it('should not call authentication with invalid fields', () => {
     const validationError = faker.random.words()
     const { sut, authenticationSpy } = makeSut({ validationError })
 
@@ -227,5 +226,24 @@ describe('Login Page', () => {
     fireEvent.submit(sut.getByTestId('form-login'))
 
     expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  it('should display modal error if authentication fails', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    const error = new InvalidCredentialsError()
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(error))
+    simulateValidSubmit(sut)
+
+    const modal = sut.getByTestId('modal')
+    await waitFor(() => modal)
+    expect(modal).toBeTruthy()
+
+    const modalText = sut.getByTestId('modal-text')
+    expect(modalText.textContent).toBe(error.message)
+
+    const buttonWrap = sut.getByTestId('button-wrap')
+    expect(buttonWrap.childElementCount).toBe(0)
   })
 })
