@@ -12,27 +12,33 @@ type Props = {
 
 type StateProps = {
   email: string
-  errorEmail: string
+  emailError: string
   password: string
-  errorPassword: string
+  passwordError: string
   isLoading: boolean
 }
 
 const Login: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState<StateProps>({
     email: '',
-    errorEmail: '',
+    emailError: '',
     password: '',
-    errorPassword: '',
+    passwordError: '',
     isLoading: false
   })
 
   useEffect(() => {
-    validation.validate('email', state.email)
+    setState(prevState => ({
+      ...prevState,
+      emailError: validation.validate('email', state.email)
+    }))
   }, [validation, state.email])
 
   useEffect(() => {
-    validation.validate('password', state.password)
+    setState(prevState => ({
+      ...prevState,
+      passwordError: validation.validate('password', state.password)
+    }))
   }, [validation, state.password])
 
   return (
@@ -46,14 +52,12 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
             name="email"
             placeholder="Digite seu e-mail"
             icon={FiMail}
-            errorMessage={state.errorEmail}
           />
           <Input
             type="password"
             name="password"
             placeholder="Digite sua senha"
             icon={FiLock}
-            errorMessage={state.errorPassword}
           />
           <Button type="submit" className={Styles.buttonWrapper}>
             Entrar

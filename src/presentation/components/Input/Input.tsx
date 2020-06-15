@@ -15,11 +15,11 @@ interface Props
     HTMLInputElement
   > {
   icon?: React.ComponentType<IconBaseProps>
-  errorMessage?: string
 }
 
-const Input: React.FC<Props> = ({ icon: Icon, errorMessage, ...rest }) => {
+const Input: React.FC<Props> = ({ icon: Icon, ...rest }) => {
   const { state, setState } = useContext(FormContext)
+  const error = state[`${rest.name}Error`]
 
   const handleChange = useCallback(
     (event: FocusEvent<HTMLInputElement>): void => {
@@ -44,9 +44,9 @@ const Input: React.FC<Props> = ({ icon: Icon, errorMessage, ...rest }) => {
           onChange={handleChange}
         />
       </div>
-      {errorMessage && (
+      {error && (
         <small data-testid={`${rest.name}-error`} className={Styles.inputError}>
-          {errorMessage}
+          {error}
         </small>
       )}
     </div>

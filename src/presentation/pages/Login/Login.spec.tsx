@@ -60,4 +60,40 @@ describe('Login Page', () => {
     expect(validationSpy.fieldName).toBe('password')
     expect(validationSpy.fieldValue).toBe(password)
   })
+
+  it('should display e-mail error message if validation  fails', () => {
+    const { validationSpy, sut } = makeSut()
+
+    const errorMessage = faker.random.words()
+    validationSpy.errorMessage = errorMessage
+
+    const emailInput = sut.getByTestId('email-input')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+
+    const emailError = sut.getAllByTestId('email-error')
+    expect(emailError).toBeTruthy()
+    expect(emailError[0].textContent).toBe(errorMessage)
+
+    const emailInputWrapper = sut.getByTestId('email-inputWrapper')
+    expect(emailInputWrapper.childElementCount).toBe(2)
+  })
+
+  it('should display password error message if validation  fails', () => {
+    const { validationSpy, sut } = makeSut()
+
+    const errorMessage = faker.random.words()
+    validationSpy.errorMessage = errorMessage
+
+    const passwordInput = sut.getByTestId('password-input')
+    fireEvent.input(passwordInput, {
+      target: { value: faker.internet.password() }
+    })
+
+    const passwordError = sut.getAllByTestId('password-error')
+    expect(passwordError).toBeTruthy()
+    expect(passwordError[0].textContent).toBe(errorMessage)
+
+    const passwordInputWrapper = sut.getByTestId('password-inputWrapper')
+    expect(passwordInputWrapper.childElementCount).toBe(2)
+  })
 })
