@@ -298,4 +298,14 @@ describe('Login Page', () => {
     expect(history.length).toBe(2)
     expect(history.location.pathname).toBe('/signup')
   })
+
+  it('should not allow to submit form if state is loading', () => {
+    const { sut } = makeSut()
+
+    populateValidFields(sut)
+
+    const form = sut.getByTestId('form-login')
+    fireEvent.submit(form)
+    fireEvent.submit(form)
+  })
 })
