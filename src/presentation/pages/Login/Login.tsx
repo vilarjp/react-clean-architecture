@@ -77,12 +77,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     },
     [
       authentication,
+      history,
       state.email,
-      state.password,
-      state.loading,
       state.emailError,
-      state.passwordError,
-      history
+      state.loading,
+      state.password,
+      state.passwordError
     ]
   )
 
