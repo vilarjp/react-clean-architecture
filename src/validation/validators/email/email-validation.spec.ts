@@ -12,6 +12,12 @@ describe('EmailValidation', () => {
     expect(error).toEqual(new InvalidFieldError())
   })
 
+  it('should return falsy if e-mail is empty', () => {
+    const sut = makeSut()
+    const error = sut.validate('')
+    expect(error).toBeFalsy()
+  })
+
   it('should return falsy if e-mail is valid', () => {
     const sut = makeSut()
     const error = sut.validate(faker.internet.email())
