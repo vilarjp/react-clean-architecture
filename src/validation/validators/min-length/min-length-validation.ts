@@ -1,4 +1,4 @@
-import { RequiredFieldValidation } from '@/validation/validators/required-field/required-field-validation'
+import { RequiredFieldValidation } from '@/validation/validators'
 import { MinLengthFieldError } from '@/validation/errors'
 
 export class MinLengthValidation implements RequiredFieldValidation {

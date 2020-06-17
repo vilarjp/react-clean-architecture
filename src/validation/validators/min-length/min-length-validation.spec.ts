@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { MinLengthFieldError } from '@/validation/errors'
-import { MinLengthValidation } from './length-validation'
+import { MinLengthValidation } from './min-length-validation'
 
 const makeSut = (minLength: number): MinLengthValidation =>
   new MinLengthValidation(faker.database.column(), minLength)
