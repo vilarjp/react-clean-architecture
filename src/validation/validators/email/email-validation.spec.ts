@@ -9,7 +9,7 @@ describe('EmailValidation', () => {
   it('should return error if e-mail is invalid', () => {
     const sut = makeSut()
     const error = sut.validate(faker.random.word())
-    expect(error).toEqual(new InvalidFieldError())
+    expect(error).toEqual(new InvalidFieldError('Insira um e-mail válido'))
   })
 
   it('should return falsy if e-mail is empty', () => {

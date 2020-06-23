@@ -9,7 +9,7 @@ export class FieldValidationSpy implements FieldValidation {
     this.field = field
   }
 
-  validate(value: string): Error {
+  validate(): Error {
     return this.error
   }
 }
