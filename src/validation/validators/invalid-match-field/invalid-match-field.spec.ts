@@ -8,17 +8,14 @@ const makeSut = (): InvalidMatchField =>
 describe('InvalidMatchField', () => {
   it('should return error if match is invalid', () => {
     const sut = makeSut()
-    const error = sut.validateMatchValues(
-      faker.random.word(),
-      faker.random.word()
-    )
+    const error = sut.validate(faker.random.word(), faker.random.word())
     expect(error).toEqual(new InvalidFieldError())
   })
 
   it('should return falsy if match is valid', () => {
     const value = faker.random.word()
     const sut = makeSut()
-    const error = sut.validateMatchValues(value, value)
+    const error = sut.validate(value, value)
     expect(error).toBeFalsy()
   })
 })

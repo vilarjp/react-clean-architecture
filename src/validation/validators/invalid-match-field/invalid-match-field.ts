@@ -8,11 +8,7 @@ export class InvalidMatchField implements FieldValidation {
     this.field = field
   }
 
-  validateMatchValues(value: string, matchValue: string): Error {
-    return value === matchValue ? this.validate(true) : this.validate(false)
-  }
-
-  validate(value: boolean): Error {
-    return value ? null : new InvalidFieldError()
+  validate(value: string, secondValue: string): Error {
+    return value === secondValue ? null : new InvalidFieldError()
   }
 }
