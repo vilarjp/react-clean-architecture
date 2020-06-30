@@ -3,9 +3,10 @@
 </h4>
 
 <p align="center">
-    <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/vilarjp/react-clean-architecture" />
-    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/vilarjp/react-clean-architecture" />
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/vilarjp/react-clean-architecture" />
+    <img src="https://img.shields.io/github/languages/count/vilarjp/react-clean-architecture" />
+    <img src="https://img.shields.io/github/languages/top/vilarjp/react-clean-architecture" />
+    <img src="https://img.shields.io/github/last-commit/vilarjp/react-clean-architecture" />
+     <img src="https://travis-ci.org/vilarjp/react-clean-architecture.svg?branch=master" />
 </p>
 
 <p>
