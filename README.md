@@ -9,7 +9,7 @@
 </p>
 
 <p>
-  Este é um projeto ainda em desevolvimento, o qual eu busco aplicar conhecimentos de arquitetura de software em um sistema frontend criado utilizando a biblioteca ReactJS. 
+  Este é um projeto ainda em desevolvimento, o qual eu busco aplicar conhecimentos de arquitetura de software em um sistema frontend criado utilizando a biblioteca ReactJS. Alguns conceitos já estão aplicados, outros estão sendo estudados e ainda serão aplicados, mas deixo aqui todas as features e design patters que este projeto terá, sempre buscando o melhor caminho para um desenvolimento limpo do software.
 </p>
 
 > ## Princípios
