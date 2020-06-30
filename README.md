@@ -5,8 +5,10 @@
 <p align="center">
     <img src="https://img.shields.io/github/languages/count/vilarjp/react-clean-architecture" />
     <img src="https://img.shields.io/github/languages/top/vilarjp/react-clean-architecture" />
+    <img src="https://img.shields.io/badge/code%20style-airbnb-blue" />
     <img src="https://img.shields.io/github/last-commit/vilarjp/react-clean-architecture" />
-     <img src="https://travis-ci.org/vilarjp/react-clean-architecture.svg?branch=master" />
+    <img src="https://travis-ci.org/vilarjp/react-clean-architecture.svg?branch=master" />
+    <img src="https://coveralls.io/repos/github/vilarjp/react-clean-architecture/badge.svg?branch=master" />
 </p>
 
 <p>
