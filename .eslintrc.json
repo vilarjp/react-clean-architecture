@@ -62,6 +62,7 @@
       }
     ],
     "@typescript-eslint/no-explicit-any": "off",
-    "no-useless-constructor": "off"
+    "no-useless-constructor": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
