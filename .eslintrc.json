@@ -61,6 +61,7 @@
         "types": ["object"]
       }
     ],
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-useless-constructor": "off"
   }
 }
