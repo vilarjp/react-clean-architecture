@@ -1,8 +1,6 @@
-@import '../../styles/colors.scss';
-
 .buttonWrap {
-  background: $primary;
-  color: $black;
+  background: var(--primary);
+  color: var(--black);
   font-weight: bold;
   border: none;
   border-radius: 8px;
@@ -24,7 +22,7 @@
 
   .spinner {
     div {
-      background: $black;
+      background: var(--black);
     }
   }
 }

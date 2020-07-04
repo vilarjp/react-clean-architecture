@@ -1,5 +1,3 @@
-@import '../../styles/colors.scss';
-
 .spinner {
   display: inline-block;
   position: relative;
@@ -11,7 +9,7 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: $primary;
+    background: var(--primary);
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
 
     &:nth-child(1) {

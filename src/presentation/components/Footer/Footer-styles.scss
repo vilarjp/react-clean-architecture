@@ -1,6 +1,4 @@
-@import '../../styles/colors.scss';
-
 .footer {
-  background: $primaryDark;
+  background: var(--primaryDark);
   height: 48px;
 }
