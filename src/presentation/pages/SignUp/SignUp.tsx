@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiUser, FiMail, FiLock } from 'react-icons/fi'
 import {
@@ -11,11 +11,25 @@ import {
 import FormContext from '@/presentation/contexts/Form/FormContext'
 import Styles from './SignUp-styles.scss'
 
+type StateProps = {
+  nameError: string
+  emailError: string
+  passwordError: string
+  passwordConfirmationError: string
+}
+
 const SignUp: React.FC = () => {
+  const [state] = useState<StateProps>({
+    nameError: 'Campo obrigatório',
+    emailError: 'Campo obrigatório',
+    passwordError: 'Campo obrigatório',
+    passwordConfirmationError: 'Campo obrigatório'
+  })
+
   return (
     <div className={Styles.signup}>
       <LoginHeader />
-      <FormContext.Provider value={{ state: {} }}>
+      <FormContext.Provider value={{ state }}>
         <form className={Styles.form}>
           <h3>Criar conta</h3>
           <Input
@@ -42,7 +56,16 @@ const SignUp: React.FC = () => {
             placeholder="Repita sua senha"
             icon={FiLock}
           />
-          <Button type="submit" className={Styles.buttonWrapper}>
+          <Button
+            type="submit"
+            className={Styles.buttonWrapper}
+            disabled={
+              !!state.nameError ||
+              !!state.emailError ||
+              !!state.passwordError ||
+              !!state.passwordConfirmationError
+            }
+          >
             Criar
           </Button>
           <Modal />
