@@ -10,10 +10,12 @@ import {
 } from '@/presentation/components'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 import { Validation } from '@/presentation/protocols/validation'
+import { AddAccount } from '@/domain/usecases'
 import Styles from './SignUp-styles.scss'
 
 type Props = {
   validation: Validation
+  addAcount: AddAccount
 }
 
 type StateProps = {
@@ -28,7 +30,7 @@ type StateProps = {
   loading: boolean
 }
 
-const SignUp: React.FC<Props> = ({ validation }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
   const [state, setState] = useState<StateProps>({
     name: '',
     nameError: '',
@@ -79,8 +81,20 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
         ...prevState,
         loading: true
       }))
+      await addAcount.add({
+        name: state.name,
+        email: state.email,
+        password: state.password,
+        passwordConfirmation: state.passwordConfirmation
+      })
     },
-    []
+    [
+      addAcount,
+      state.name,
+      state.email,
+      state.password,
+      state.passwordConfirmation
+    ]
   )
 
   return (
