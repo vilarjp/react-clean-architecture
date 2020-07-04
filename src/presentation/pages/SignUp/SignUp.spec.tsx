@@ -1,6 +1,11 @@
 import React from 'react'
 import faker from 'faker'
-import { RenderResult, render } from '@testing-library/react'
+import {
+  RenderResult,
+  render,
+  fireEvent,
+  waitFor
+} from '@testing-library/react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { FormHelper, ValidationStub } from '@/presentation/test'
@@ -29,6 +34,27 @@ const makeSut = (params?: SutParams): SutTypes => {
   return {
     sut
   }
+}
+
+const simulateValidSubmit = async (
+  sut: RenderResult,
+  name = faker.name.findName(),
+  email = faker.internet.email(),
+  password = faker.internet.password()
+): Promise<void> => {
+  FormHelper.populateField(sut, 'name', name)
+  FormHelper.populateField(sut, 'email', email)
+  FormHelper.populateField(sut, 'password', password)
+  FormHelper.populateField(sut, 'passwordConfirmation', password)
+
+  const buttonWrap = sut.getByTestId('button-wrap')
+  fireEvent.click(buttonWrap)
+  await waitFor(() => sut.getByTestId('form-login'))
+}
+
+const testElementExists = (sut: RenderResult, elementName: string): void => {
+  const element = sut.getByTestId(elementName)
+  expect(element).toBeTruthy()
 }
 
 describe('SignUp Page', () => {
@@ -113,5 +139,15 @@ describe('SignUp Page', () => {
     FormHelper.populateField(sut, 'passwordConfirmation')
 
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Criar')
+  })
+
+  it('should display spinner on submit', async () => {
+    const { sut } = makeSut()
+
+    await simulateValidSubmit(sut)
+
+    FormHelper.testChildCount(sut, 'button-wrap', 1)
+    FormHelper.testButtonIsDisabled(sut, 'button-wrap', true, '')
+    testElementExists(sut, 'spinner-loading')
   })
 })

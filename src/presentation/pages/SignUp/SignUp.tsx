@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { FiUser, FiMail, FiLock } from 'react-icons/fi'
 import {
@@ -25,6 +25,7 @@ type StateProps = {
   passwordError: string
   passwordConfirmation: string
   passwordConfirmationError: string
+  loading: boolean
 }
 
 const SignUp: React.FC<Props> = ({ validation }: Props) => {
@@ -36,7 +37,8 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     password: '',
     passwordError: '',
     passwordConfirmation: '',
-    passwordConfirmationError: ''
+    passwordConfirmationError: '',
+    loading: false
   })
 
   useEffect(() => {
@@ -70,11 +72,26 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     }))
   }, [validation, state.passwordConfirmation])
 
+  const onSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+      event.preventDefault()
+      setState(prevState => ({
+        ...prevState,
+        loading: true
+      }))
+    },
+    []
+  )
+
   return (
     <div className={Styles.signup}>
       <LoginHeader />
       <FormContext.Provider value={{ state, setState }}>
-        <form className={Styles.form}>
+        <form
+          data-testid="form-login"
+          className={Styles.form}
+          onSubmit={onSubmit}
+        >
           <h3>Criar conta</h3>
           <Input
             type="text"

@@ -76,6 +76,11 @@ const expectElementTextContent = (
   expect(element.textContent).toBe(elementTextt)
 }
 
+const testElementExists = (sut: RenderResult, elementName: string): void => {
+  const element = sut.getByTestId(elementName)
+  expect(element).toBeTruthy()
+}
+
 describe('Login Page', () => {
   it('should start with initial state', () => {
     const validationError = faker.random.words()
@@ -151,6 +156,7 @@ describe('Login Page', () => {
 
     FormHelper.testChildCount(sut, 'button-wrap', 1)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', true, '')
+    testElementExists(sut, 'spinner-loading')
   })
 
   it('should call authentication with correct values', async () => {
