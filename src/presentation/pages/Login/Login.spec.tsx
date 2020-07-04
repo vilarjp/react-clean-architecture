@@ -111,7 +111,7 @@ const expectElementTextContent = (
 
 describe('Login Page', () => {
   it('should start with initial state', () => {
-    const validationError = 'Campo obrigatório'
+    const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
 
     FormHelper.testChildCount(sut, 'button-wrap', 0)

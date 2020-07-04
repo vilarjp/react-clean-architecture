@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FiUser, FiMail, FiLock } from 'react-icons/fi'
 import {
@@ -9,27 +9,41 @@ import {
   Modal
 } from '@/presentation/components'
 import FormContext from '@/presentation/contexts/Form/FormContext'
+import { Validation } from '@/presentation/protocols/validation'
 import Styles from './SignUp-styles.scss'
 
+type Props = {
+  validation: Validation
+}
+
 type StateProps = {
+  name: string
   nameError: string
   emailError: string
   passwordError: string
   passwordConfirmationError: string
 }
 
-const SignUp: React.FC = () => {
-  const [state] = useState<StateProps>({
-    nameError: 'Campo obrigatório',
+const SignUp: React.FC<Props> = ({ validation }: Props) => {
+  const [state, setState] = useState<StateProps>({
+    name: '',
+    nameError: '',
     emailError: 'Campo obrigatório',
     passwordError: 'Campo obrigatório',
     passwordConfirmationError: 'Campo obrigatório'
   })
 
+  useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
+      nameError: validation.validate('name', state.name)
+    }))
+  }, [validation, state.name])
+
   return (
     <div className={Styles.signup}>
       <LoginHeader />
-      <FormContext.Provider value={{ state }}>
+      <FormContext.Provider value={{ state, setState }}>
         <form className={Styles.form}>
           <h3>Criar conta</h3>
           <Input
