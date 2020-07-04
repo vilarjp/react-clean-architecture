@@ -10,6 +10,7 @@ import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { FormHelper, ValidationStub, AddAccountSpy } from '@/presentation/test'
 
+import { EmailInUseError } from '@/domain/errors'
 import SignUp from './SignUp'
 
 type SutParams = {
@@ -181,5 +182,15 @@ describe('SignUp Page', () => {
     await simulateValidSubmit(sut)
 
     expect(addAcountSpy.callsCount).toBe(0)
+  })
+
+  it('should display error modal if authentication fails', async () => {
+    const { sut, addAcountSpy } = makeSut()
+    const error = new EmailInUseError()
+    jest.spyOn(addAcountSpy, 'add').mockRejectedValueOnce(error)
+    await simulateValidSubmit(sut)
+
+    FormHelper.expectElementTextContent(sut, 'modal-text', error.message)
+    FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Criar')
   })
 })

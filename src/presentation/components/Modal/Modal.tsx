@@ -4,6 +4,10 @@ import FormContext from '@/presentation/contexts/Form/FormContext'
 const Modal: React.FC = () => {
   const { state } = useContext(FormContext)
 
+  if (!state.error) {
+    return null
+  }
+
   return (
     <div data-testid="modal">
       <p data-testid="modal-text">{state.error}</p>

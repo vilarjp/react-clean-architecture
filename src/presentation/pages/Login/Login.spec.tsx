@@ -176,9 +176,7 @@ describe('Login Page', () => {
   it('should display error modal if authentication fails', async () => {
     const { sut, authenticationSpy } = makeSut()
     const error = new InvalidCredentialsError()
-    jest
-      .spyOn(authenticationSpy, 'auth')
-      .mockReturnValueOnce(Promise.reject(error))
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
     await simulateValidSubmit(sut)
 
     FormHelper.expectElementTextContent(sut, 'modal-text', error.message)

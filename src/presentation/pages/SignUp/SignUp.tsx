@@ -28,6 +28,7 @@ type StateProps = {
   passwordConfirmation: string
   passwordConfirmationError: string
   loading: boolean
+  error: string
 }
 
 const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
@@ -40,7 +41,8 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
     passwordError: '',
     passwordConfirmation: '',
     passwordConfirmationError: '',
-    loading: false
+    loading: false,
+    error: ''
   })
 
   useEffect(() => {
@@ -89,12 +91,20 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
         ...prevState,
         loading: true
       }))
-      await addAcount.add({
-        name: state.name,
-        email: state.email,
-        password: state.password,
-        passwordConfirmation: state.passwordConfirmation
-      })
+      try {
+        await addAcount.add({
+          name: state.name,
+          email: state.email,
+          password: state.password,
+          passwordConfirmation: state.passwordConfirmation
+        })
+      } catch (err) {
+        setState(prevState => ({
+          ...prevState,
+          loading: false,
+          error: err.message
+        }))
+      }
     },
     [
       addAcount,
