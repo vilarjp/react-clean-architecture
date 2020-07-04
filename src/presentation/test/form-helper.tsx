@@ -44,3 +44,20 @@ export const populateField = (
     target: { value: fieldValue }
   })
 }
+
+export const testElementExists = (
+  sut: RenderResult,
+  elementName: string
+): void => {
+  const element = sut.getByTestId(elementName)
+  expect(element).toBeTruthy()
+}
+
+export const expectElementTextContent = (
+  sut: RenderResult,
+  elementName: string,
+  elementTextt: string
+): void => {
+  const element = sut.getByTestId(elementName)
+  expect(element.textContent).toBe(elementTextt)
+}

@@ -52,11 +52,6 @@ const simulateValidSubmit = async (
   await waitFor(() => sut.getByTestId('form-login'))
 }
 
-const testElementExists = (sut: RenderResult, elementName: string): void => {
-  const element = sut.getByTestId(elementName)
-  expect(element).toBeTruthy()
-}
-
 describe('SignUp Page', () => {
   it('should start with initial state', () => {
     const validationError = faker.random.words()
@@ -148,6 +143,6 @@ describe('SignUp Page', () => {
 
     FormHelper.testChildCount(sut, 'button-wrap', 1)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', true, '')
-    testElementExists(sut, 'spinner-loading')
+    FormHelper.testElementExists(sut, 'spinner-loading')
   })
 })

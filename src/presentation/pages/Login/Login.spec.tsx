@@ -67,20 +67,6 @@ const simulateValidSubmit = async (
   await waitFor(() => sut.getByTestId('form-login'))
 }
 
-const expectElementTextContent = (
-  sut: RenderResult,
-  elementName: string,
-  elementTextt: string
-): void => {
-  const element = sut.getByTestId(elementName)
-  expect(element.textContent).toBe(elementTextt)
-}
-
-const testElementExists = (sut: RenderResult, elementName: string): void => {
-  const element = sut.getByTestId(elementName)
-  expect(element).toBeTruthy()
-}
-
 describe('Login Page', () => {
   it('should start with initial state', () => {
     const validationError = faker.random.words()
@@ -156,7 +142,7 @@ describe('Login Page', () => {
 
     FormHelper.testChildCount(sut, 'button-wrap', 1)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', true, '')
-    testElementExists(sut, 'spinner-loading')
+    FormHelper.testElementExists(sut, 'spinner-loading')
   })
 
   it('should call authentication with correct values', async () => {
@@ -195,7 +181,7 @@ describe('Login Page', () => {
       .mockReturnValueOnce(Promise.reject(error))
     await simulateValidSubmit(sut)
 
-    expectElementTextContent(sut, 'modal-text', error.message)
+    FormHelper.expectElementTextContent(sut, 'modal-text', error.message)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Entrar')
   })
 
@@ -222,7 +208,7 @@ describe('Login Page', () => {
   })
 
   it('should not allow to submit form if state is loading', () => {
-    const { sut } = makeSut()
+    const { sut, authenticationSpy } = makeSut()
 
     FormHelper.populateField(sut, 'email', faker.internet.email())
     FormHelper.populateField(sut, 'password', faker.internet.password())
@@ -230,5 +216,7 @@ describe('Login Page', () => {
     const form = sut.getByTestId('form-login')
     fireEvent.submit(form)
     fireEvent.submit(form)
+    fireEvent.submit(form)
+    expect(authenticationSpy.callsCount).toBe(1)
   })
 })
