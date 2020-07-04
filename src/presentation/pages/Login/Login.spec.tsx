@@ -67,20 +67,6 @@ const simulateValidSubmit = async (
   await waitFor(() => sut.getByTestId('form-login'))
 }
 
-const expectFieldValidationSuccess = (
-  sut: RenderResult,
-  fieldName: string,
-  fieldValue: string
-): void => {
-  const field = sut.getByTestId(`${fieldName}-input`) as HTMLInputElement
-  fireEvent.input(field, { target: { value: fieldValue } })
-
-  const wrapper = sut.getByTestId(`${fieldName}-inputWrapper`)
-  expect(wrapper.childElementCount).toBe(1)
-  expect(sut.queryByTestId(`${fieldName}-error`)).toBeNull()
-  expect(field.value).toBe(fieldValue)
-}
-
 const expectElementTextContent = (
   sut: RenderResult,
   elementName: string,
@@ -138,15 +124,15 @@ describe('Login Page', () => {
   it('should display valid e-mail state if validation succeeds', () => {
     const { sut } = makeSut()
 
-    const email = faker.internet.email()
-    expectFieldValidationSuccess(sut, 'email', email)
+    FormHelper.populateField(sut, 'email')
+    FormHelper.testFieldState(sut, 'email')
   })
 
   it('should display valid password state if validation succeeds', () => {
     const { sut } = makeSut()
 
-    const password = faker.internet.password()
-    expectFieldValidationSuccess(sut, 'password', password)
+    FormHelper.populateField(sut, 'password')
+    FormHelper.testFieldState(sut, 'password')
   })
 
   it('should enable submit button if form validation is valid', () => {
