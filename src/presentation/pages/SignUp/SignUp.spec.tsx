@@ -1,6 +1,6 @@
 import React from 'react'
 import faker from 'faker'
-import { RenderResult, render, fireEvent } from '@testing-library/react'
+import { RenderResult, render } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { FormHelper, ValidationStub } from '@/presentation/test'
@@ -31,17 +31,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const populateField = (
-  sut: RenderResult,
-  fieldName: string,
-  fieldValue = faker.random.word()
-): void => {
-  const field = sut.getByTestId(`${fieldName}-input`)
-  fireEvent.input(field, {
-    target: { value: fieldValue }
-  })
-}
-
 describe('SignUp Page', () => {
   it('should start with initial state', () => {
     const validationError = faker.random.words()
@@ -59,7 +48,15 @@ describe('SignUp Page', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
 
-    populateField(sut, 'name')
+    FormHelper.populateField(sut, 'name')
     FormHelper.testFieldState(sut, 'name', validationError)
+  })
+
+  it('should display e-mail error message if validation fails', () => {
+    const validationError = faker.random.words()
+    const { sut } = makeSut({ validationError })
+
+    FormHelper.populateField(sut, 'email', faker.internet.email())
+    FormHelper.testFieldState(sut, 'email', validationError)
   })
 })

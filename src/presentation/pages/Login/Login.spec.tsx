@@ -15,6 +15,7 @@ import {
   FormHelper
 } from '@/presentation/test'
 import { InvalidCredentialsError } from '@/domain/errors'
+
 import Login from './Login'
 
 type SutParams = {
@@ -53,33 +54,13 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const populateEmailField = (
-  sut: RenderResult,
-  email = faker.internet.email()
-): void => {
-  const emailInput = sut.getByTestId('email-input')
-  fireEvent.input(emailInput, {
-    target: { value: email }
-  })
-}
-
-const populatePasswordField = (
-  sut: RenderResult,
-  password = faker.internet.password()
-): void => {
-  const passwordInput = sut.getByTestId('password-input')
-  fireEvent.input(passwordInput, {
-    target: { value: password }
-  })
-}
-
 const simulateValidSubmit = async (
   sut: RenderResult,
   email = faker.internet.email(),
   password = faker.internet.password()
 ): Promise<void> => {
-  populateEmailField(sut, email)
-  populatePasswordField(sut, password)
+  FormHelper.populateField(sut, 'email', email)
+  FormHelper.populateField(sut, 'password', password)
 
   const buttonWrap = sut.getByTestId('button-wrap')
   fireEvent.click(buttonWrap)
@@ -124,7 +105,7 @@ describe('Login Page', () => {
     const { sut } = makeSut()
 
     const email = faker.internet.email()
-    populateEmailField(sut, email)
+    FormHelper.populateField(sut, 'email', email)
 
     FormHelper.testFieldState(sut, 'email')
   })
@@ -133,7 +114,7 @@ describe('Login Page', () => {
     const { sut } = makeSut()
 
     const password = faker.internet.password()
-    populatePasswordField(sut, password)
+    FormHelper.populateField(sut, 'password', password)
 
     FormHelper.testFieldState(sut, 'password')
   })
@@ -142,7 +123,7 @@ describe('Login Page', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
 
-    populateEmailField(sut)
+    FormHelper.populateField(sut, 'email', faker.internet.email())
     FormHelper.testFieldState(sut, 'email', validationError)
   })
 
@@ -150,7 +131,7 @@ describe('Login Page', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
 
-    populatePasswordField(sut)
+    FormHelper.populateField(sut, 'password', faker.internet.password())
     FormHelper.testFieldState(sut, 'password', validationError)
   })
 
@@ -171,8 +152,8 @@ describe('Login Page', () => {
   it('should enable submit button if form validation is valid', () => {
     const { sut } = makeSut()
 
-    populateEmailField(sut, faker.internet.email())
-    populatePasswordField(sut, faker.internet.password())
+    FormHelper.populateField(sut, 'email', faker.internet.email())
+    FormHelper.populateField(sut, 'password', faker.internet.password())
 
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Entrar')
   })
@@ -251,8 +232,8 @@ describe('Login Page', () => {
   it('should not allow to submit form if state is loading', () => {
     const { sut } = makeSut()
 
-    populateEmailField(sut, faker.internet.email())
-    populatePasswordField(sut, faker.internet.password())
+    FormHelper.populateField(sut, 'email', faker.internet.email())
+    FormHelper.populateField(sut, 'password', faker.internet.password())
 
     const form = sut.getByTestId('form-login')
     fireEvent.submit(form)
