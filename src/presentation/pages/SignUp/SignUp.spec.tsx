@@ -39,7 +39,7 @@ describe('SignUp Page', () => {
     FormHelper.testChildCount(sut, 'button-wrap', 0)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', true, 'Criar')
     FormHelper.testFieldState(sut, 'name', validationError)
-    FormHelper.testFieldState(sut, 'email', 'Campo obrigatório')
+    FormHelper.testFieldState(sut, 'email', validationError)
     FormHelper.testFieldState(sut, 'password', 'Campo obrigatório')
     FormHelper.testFieldState(sut, 'passwordConfirmation', 'Campo obrigatório')
   })
@@ -56,7 +56,7 @@ describe('SignUp Page', () => {
     const validationError = faker.random.words()
     const { sut } = makeSut({ validationError })
 
-    FormHelper.populateField(sut, 'email', faker.internet.email())
+    FormHelper.populateField(sut, 'email')
     FormHelper.testFieldState(sut, 'email', validationError)
   })
 })

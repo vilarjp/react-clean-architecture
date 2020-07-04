@@ -31,6 +31,7 @@ export const testFieldState = (
 
   const error = sut.queryByTestId(`${fieldName}-error`)
   expect(error).toBe(validationError ? error : null)
+  expect(error?.textContent).toBe(validationError || undefined)
 }
 
 export const populateField = (

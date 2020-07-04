@@ -19,6 +19,7 @@ type Props = {
 type StateProps = {
   name: string
   nameError: string
+  email: string
   emailError: string
   passwordError: string
   passwordConfirmationError: string
@@ -28,7 +29,8 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState<StateProps>({
     name: '',
     nameError: '',
-    emailError: 'Campo obrigatório',
+    email: '',
+    emailError: '',
     passwordError: 'Campo obrigatório',
     passwordConfirmationError: 'Campo obrigatório'
   })
@@ -36,9 +38,10 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
   useEffect(() => {
     setState(prevState => ({
       ...prevState,
-      nameError: validation.validate('name', state.name)
+      nameError: validation.validate('name', state.name),
+      emailError: validation.validate('email', state.email)
     }))
-  }, [validation, state.name])
+  }, [validation, state.name, state.email])
 
   return (
     <div className={Styles.signup}>
