@@ -40,8 +40,8 @@ describe('SignUp Page', () => {
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', true, 'Criar')
     FormHelper.testFieldState(sut, 'name', validationError)
     FormHelper.testFieldState(sut, 'email', validationError)
-    FormHelper.testFieldState(sut, 'password', 'Campo obrigatório')
-    FormHelper.testFieldState(sut, 'passwordConfirmation', 'Campo obrigatório')
+    FormHelper.testFieldState(sut, 'password', validationError)
+    FormHelper.testFieldState(sut, 'passwordConfirmation', validationError)
   })
 
   it('should display name error message if validation fails', () => {
@@ -58,5 +58,49 @@ describe('SignUp Page', () => {
 
     FormHelper.populateField(sut, 'email')
     FormHelper.testFieldState(sut, 'email', validationError)
+  })
+
+  it('should display password error message if validation fails', () => {
+    const validationError = faker.random.words()
+    const { sut } = makeSut({ validationError })
+
+    FormHelper.populateField(sut, 'password')
+    FormHelper.testFieldState(sut, 'password', validationError)
+  })
+
+  it('should display passwordConfirmation error message if validation fails', () => {
+    const validationError = faker.random.words()
+    const { sut } = makeSut({ validationError })
+
+    FormHelper.populateField(sut, 'passwordConfirmation')
+    FormHelper.testFieldState(sut, 'passwordConfirmation', validationError)
+  })
+
+  it('should display valid name state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    FormHelper.populateField(sut, 'name')
+    FormHelper.testFieldState(sut, 'name')
+  })
+
+  it('should display valid e-mail state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    FormHelper.populateField(sut, 'email')
+    FormHelper.testFieldState(sut, 'email')
+  })
+
+  it('should display valid password state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    FormHelper.populateField(sut, 'password')
+    FormHelper.testFieldState(sut, 'password')
+  })
+
+  it('should display valid passwordConfirmation state if validation succeeds', () => {
+    const { sut } = makeSut()
+
+    FormHelper.populateField(sut, 'passwordConfirmation')
+    FormHelper.testFieldState(sut, 'passwordConfirmation')
   })
 })

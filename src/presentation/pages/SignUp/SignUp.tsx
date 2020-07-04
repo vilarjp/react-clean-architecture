@@ -21,7 +21,9 @@ type StateProps = {
   nameError: string
   email: string
   emailError: string
+  password: string
   passwordError: string
+  passwordConfirmation: string
   passwordConfirmationError: string
 }
 
@@ -31,17 +33,42 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     nameError: '',
     email: '',
     emailError: '',
-    passwordError: 'Campo obrigatório',
-    passwordConfirmationError: 'Campo obrigatório'
+    password: '',
+    passwordError: '',
+    passwordConfirmation: '',
+    passwordConfirmationError: ''
   })
 
   useEffect(() => {
     setState(prevState => ({
       ...prevState,
-      nameError: validation.validate('name', state.name),
+      nameError: validation.validate('name', state.name)
+    }))
+  }, [validation, state.name])
+
+  useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
       emailError: validation.validate('email', state.email)
     }))
-  }, [validation, state.name, state.email])
+  }, [validation, state.email])
+
+  useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
+      passwordError: validation.validate('password', state.password)
+    }))
+  }, [validation, state.password])
+
+  useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
+      passwordConfirmationError: validation.validate(
+        'password',
+        state.passwordConfirmation
+      )
+    }))
+  }, [validation, state.passwordConfirmation])
 
   return (
     <div className={Styles.signup}>
