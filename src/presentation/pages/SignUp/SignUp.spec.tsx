@@ -173,4 +173,13 @@ describe('SignUp Page', () => {
 
     expect(addAcountSpy.callsCount).toBe(1)
   })
+
+  it('should not call authentication with invalid fields', async () => {
+    const validationError = faker.random.words()
+    const { sut, addAcountSpy } = makeSut({ validationError })
+
+    await simulateValidSubmit(sut)
+
+    expect(addAcountSpy.callsCount).toBe(0)
+  })
 })

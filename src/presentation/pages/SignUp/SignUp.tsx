@@ -77,7 +77,14 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
       event.preventDefault()
-      if (state.loading) return
+      if (
+        state.loading ||
+        state.nameError ||
+        state.emailError ||
+        state.passwordError ||
+        state.passwordConfirmationError
+      )
+        return
       setState(prevState => ({
         ...prevState,
         loading: true
@@ -95,7 +102,11 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
       state.email,
       state.password,
       state.passwordConfirmation,
-      state.loading
+      state.loading,
+      state.nameError,
+      state.emailError,
+      state.passwordError,
+      state.passwordConfirmationError
     ]
   )
 
