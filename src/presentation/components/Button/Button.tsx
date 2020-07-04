@@ -35,7 +35,7 @@ const Button: React.FC<Props> = ({
       data-testid="button-wrap"
       {...rest}
       type={rest.type ? rest.type : 'button'}
-      className={`${Styles.buttonWrap} ${className} ${buttonTheme || ''} `}
+      className={`${Styles.buttonWrap} ${className} ${buttonTheme || null} `}
       disabled={isDisabled}
     >
       {isLoading ? <Spinner className={Styles.spinner} /> : children}
