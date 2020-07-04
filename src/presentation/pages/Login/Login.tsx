@@ -9,13 +9,14 @@ import {
   Modal
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
-import { Authentication } from '@/domain/usecases'
+import { Authentication, SaveAccessToken } from '@/domain/usecases'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 import Styles from './Login-styles.scss'
 
 type Props = {
   validation: Validation
   authentication: Authentication
+  saveAccessToken: SaveAccessToken
 }
 
 type StateProps = {
@@ -27,7 +28,11 @@ type StateProps = {
   error: string
 }
 
-const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+const Login: React.FC<Props> = ({
+  validation,
+  authentication,
+  saveAccessToken
+}: Props) => {
   const [state, setState] = useState<StateProps>({
     email: '',
     emailError: '',
@@ -65,7 +70,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           email: state.email,
           password: state.password
         })
-        localStorage.setItem('accessToken', account.accessToken)
+        await saveAccessToken.save(account.accessToken)
         history.replace('/')
       } catch (err) {
         setState(prevState => ({
@@ -77,6 +82,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     },
     [
       authentication,
+      saveAccessToken,
       history,
       state.email,
       state.emailError,
