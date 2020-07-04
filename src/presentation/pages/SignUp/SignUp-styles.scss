@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+.signup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 400px;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 1px 3px -1px var(--black);
+
+    h3 {
+      color: var(--primaryDark);
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .buttonWrapper {
+      margin-top: 24px;
+    }
+
+    .link {
+      text-align: center;
+      color: var(--black);
+      font-weight: bold;
+      margin-top: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.5s;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}
