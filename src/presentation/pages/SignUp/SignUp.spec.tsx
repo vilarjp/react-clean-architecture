@@ -8,7 +8,12 @@ import {
 } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { FormHelper, ValidationStub, AddAccountSpy } from '@/presentation/test'
+import {
+  FormHelper,
+  ValidationStub,
+  AddAccountSpy,
+  SaveAccessTokenMock
+} from '@/presentation/test'
 
 import { EmailInUseError } from '@/domain/errors'
 import SignUp from './SignUp'
@@ -20,6 +25,7 @@ type SutParams = {
 type SutTypes = {
   sut: RenderResult
   addAcountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 }
 
 const history = createMemoryHistory({ initialEntries: ['/signup'] })
@@ -27,16 +33,22 @@ const history = createMemoryHistory({ initialEntries: ['/signup'] })
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const addAcountSpy = new AddAccountSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
   validationStub.errorMessage = params?.validationError
   const sut = render(
     <Router history={history}>
-      <SignUp validation={validationStub} addAcount={addAcountSpy} />
+      <SignUp
+        validation={validationStub}
+        addAcount={addAcountSpy}
+        saveAccessToken={saveAccessTokenMock}
+      />
     </Router>
   )
 
   return {
     sut,
-    addAcountSpy
+    addAcountSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -190,7 +202,29 @@ describe('SignUp Page', () => {
     jest.spyOn(addAcountSpy, 'add').mockRejectedValueOnce(error)
     await simulateValidSubmit(sut)
 
-    FormHelper.expectElementTextContent(sut, 'modal-text', error.message)
+    FormHelper.testElementTextContent(sut, 'modal-text', error.message)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Criar')
+  })
+
+  it('should call SaveAccessToken on AddAccount success', async () => {
+    const { sut, addAcountSpy, saveAccessTokenMock } = makeSut()
+
+    await simulateValidSubmit(sut)
+
+    expect(saveAccessTokenMock.accessToken).toBe(
+      addAcountSpy.account.accessToken
+    )
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
+  })
+
+  it('should go to login page', async () => {
+    const { sut } = makeSut()
+
+    const register = sut.getByTestId('login-link')
+    fireEvent.click(register)
+
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/login')
   })
 })

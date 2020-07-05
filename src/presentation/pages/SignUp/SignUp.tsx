@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { FiUser, FiMail, FiLock } from 'react-icons/fi'
 import {
   LoginHeader,
@@ -10,12 +10,13 @@ import {
 } from '@/presentation/components'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 import { Validation } from '@/presentation/protocols/validation'
-import { AddAccount } from '@/domain/usecases'
+import { AddAccount, SaveAccessToken } from '@/domain/usecases'
 import Styles from './SignUp-styles.scss'
 
 type Props = {
   validation: Validation
   addAcount: AddAccount
+  saveAccessToken: SaveAccessToken
 }
 
 type StateProps = {
@@ -31,7 +32,11 @@ type StateProps = {
   error: string
 }
 
-const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
+const SignUp: React.FC<Props> = ({
+  validation,
+  addAcount,
+  saveAccessToken
+}: Props) => {
   const [state, setState] = useState<StateProps>({
     name: '',
     nameError: '',
@@ -44,6 +49,7 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
     loading: false,
     error: ''
   })
+  const history = useHistory()
 
   useEffect(() => {
     setState(prevState => ({
@@ -92,12 +98,14 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
         loading: true
       }))
       try {
-        await addAcount.add({
+        const account = await addAcount.add({
           name: state.name,
           email: state.email,
           password: state.password,
           passwordConfirmation: state.passwordConfirmation
         })
+        await saveAccessToken.save(account.accessToken)
+        history.replace('/')
       } catch (err) {
         setState(prevState => ({
           ...prevState,
@@ -116,7 +124,9 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
       state.nameError,
       state.emailError,
       state.passwordError,
-      state.passwordConfirmationError
+      state.passwordConfirmationError,
+      history,
+      saveAccessToken
     ]
   )
 
@@ -167,7 +177,12 @@ const SignUp: React.FC<Props> = ({ validation, addAcount }: Props) => {
             Criar
           </Button>
           <Modal />
-          <Link to="/login" className={Styles.link}>
+          <Link
+            data-testid="login-link"
+            replace
+            to="/login"
+            className={Styles.link}
+          >
             Voltar para login
           </Link>
         </form>

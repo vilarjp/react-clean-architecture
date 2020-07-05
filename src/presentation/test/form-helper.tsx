@@ -53,7 +53,7 @@ export const testElementExists = (
   expect(element).toBeTruthy()
 }
 
-export const expectElementTextContent = (
+export const testElementTextContent = (
   sut: RenderResult,
   elementName: string,
   elementTextt: string

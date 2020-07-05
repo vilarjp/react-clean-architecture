@@ -179,7 +179,7 @@ describe('Login Page', () => {
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
     await simulateValidSubmit(sut)
 
-    FormHelper.expectElementTextContent(sut, 'modal-text', error.message)
+    FormHelper.testElementTextContent(sut, 'modal-text', error.message)
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Entrar')
   })
 
@@ -201,7 +201,7 @@ describe('Login Page', () => {
     const register = sut.getByTestId('signup-link')
     fireEvent.click(register)
 
-    expect(history.length).toBe(2)
+    expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/signup')
   })
 
