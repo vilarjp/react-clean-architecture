@@ -80,9 +80,9 @@ describe('Login', () => {
       response: { accessToken: faker.random.uuid() }
     })
 
-    cy.getByTestId('email-input').type('mango@gmail.com')
+    cy.getByTestId('email-input').type(faker.internet.email())
 
-    cy.getByTestId('password-input').type('12345')
+    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
 
     cy.getByTestId('button-wrap').click()
     cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
@@ -90,5 +90,72 @@ describe('Login', () => {
     cy.window().then(window =>
       assert.isOk(window.localStorage.getItem('accessToken'))
     )
+  })
+
+  it('should show modal error if any error occours', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 500,
+      delay: 500,
+      response: {
+        error: faker.random.words()
+      }
+    })
+
+    cy.getByTestId('email-input').type(faker.internet.email())
+    cy.getByTestId('email-error').should('not.exist')
+
+    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
+    cy.getByTestId('password-error').should('not.exist')
+
+    cy.getByTestId('button-wrap').click()
+    cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
+    cy.getByTestId('modal-text').should(
+      'contain.text',
+      'Algo de errado aconteceu, por favor tente novamente.'
+    )
+    cy.getByTestId('button-wrap')
+      .getByTestId('spinner-loading')
+      .should('not.exist')
+  })
+
+  it('should prevent multiple submits', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 200,
+      response: {
+        accessToken: faker.random.uuid()
+      }
+    }).as('loginRequest')
+
+    cy.getByTestId('email-input').type(faker.internet.email())
+    cy.getByTestId('email-error').should('not.exist')
+
+    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
+    cy.getByTestId('password-error').should('not.exist')
+
+    cy.getByTestId('button-wrap').dblclick()
+    cy.get('@loginRequest.all').should('have.length', 1)
+  })
+
+  it('should submit form if press enter', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 200,
+      response: {
+        accessToken: faker.random.uuid()
+      }
+    }).as('loginRequest')
+
+    cy.getByTestId('email-input').type(faker.internet.email())
+
+    cy.getByTestId('password-input')
+      .type(faker.random.alphaNumeric(5))
+      .type('{enter}')
+
+    cy.get('@loginRequest.all').should('have.length', 1)
   })
 })
