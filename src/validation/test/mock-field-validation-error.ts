@@ -3,13 +3,12 @@ import { FieldValidation } from '@/validation/protocols/field-validation'
 export class FieldValidationSpy implements FieldValidation {
   error: Error = null
 
-  readonly field: string
+  input: object
 
-  constructor(field: string) {
-    this.field = field
-  }
+  constructor(readonly field: string) {}
 
-  validate(): Error {
+  validate(input: object): Error {
+    this.input = input
     return this.error
   }
 }

@@ -15,7 +15,7 @@ import Styles from './SignUp-styles.scss'
 
 type Props = {
   validation: Validation
-  addAcount: AddAccount
+  addAccount: AddAccount
   saveAccessToken: SaveAccessToken
 }
 
@@ -35,7 +35,7 @@ type StateProps = {
 
 const SignUp: React.FC<Props> = ({
   validation,
-  addAcount,
+  addAccount,
   saveAccessToken
 }: Props) => {
   const [state, setState] = useState<StateProps>({
@@ -54,43 +54,38 @@ const SignUp: React.FC<Props> = ({
   const history = useHistory()
 
   useEffect(() => {
-    const nameError = validation.validate('name', state.name)
-    setState(prevState => ({
-      ...prevState,
-      nameError,
-      isFormInvalid: !!nameError
-    }))
-  }, [validation, state.name])
-
-  useEffect(() => {
-    const emailError = validation.validate('email', state.email)
-    setState(prevState => ({
-      ...prevState,
-      emailError,
-      isFormInvalid: !!emailError
-    }))
-  }, [validation, state.email])
-
-  useEffect(() => {
-    const passwordError = validation.validate('password', state.password)
-    setState(prevState => ({
-      ...prevState,
-      passwordError,
-      isFormInvalid: !!passwordError
-    }))
-  }, [validation, state.password])
-
-  useEffect(() => {
+    const formData = {
+      name: state.name,
+      email: state.email,
+      password: state.password,
+      passwordConfirmation: state.passwordConfirmation
+    }
+    const nameError = validation.validate('name', formData)
+    const emailError = validation.validate('email', formData)
+    const passwordError = validation.validate('password', formData)
     const passwordConfirmationError = validation.validate(
-      'password',
-      state.passwordConfirmation
+      'passwordConfirmation',
+      formData
     )
     setState(prevState => ({
       ...prevState,
+      nameError,
+      emailError,
+      passwordError,
       passwordConfirmationError,
-      isFormInvalid: !!passwordConfirmationError
+      isFormInvalid:
+        !!nameError ||
+        !!emailError ||
+        !!passwordError ||
+        !!passwordConfirmationError
     }))
-  }, [validation, state.passwordConfirmation])
+  }, [
+    validation,
+    state.name,
+    state.email,
+    state.password,
+    state.passwordConfirmation
+  ])
 
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -101,7 +96,7 @@ const SignUp: React.FC<Props> = ({
         loading: true
       }))
       try {
-        const account = await addAcount.add({
+        const account = await addAccount.add({
           name: state.name,
           email: state.email,
           password: state.password,
@@ -118,7 +113,7 @@ const SignUp: React.FC<Props> = ({
       }
     },
     [
-      addAcount,
+      addAccount,
       saveAccessToken,
       history,
       state.name,

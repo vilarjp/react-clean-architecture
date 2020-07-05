@@ -46,22 +46,16 @@ const Login: React.FC<Props> = ({
   const history = useHistory()
 
   useEffect(() => {
-    const emailError = validation.validate('email', state.email)
+    const formData = { email: state.email, password: state.password }
+    const emailError = validation.validate('email', formData)
+    const passwordError = validation.validate('password', formData)
     setState(prevState => ({
       ...prevState,
       emailError,
-      isFormInvalid: !!emailError
-    }))
-  }, [validation, state.email])
-
-  useEffect(() => {
-    const passwordError = validation.validate('password', state.password)
-    setState(prevState => ({
-      ...prevState,
       passwordError,
-      isFormInvalid: !!passwordError
+      isFormInvalid: !!emailError || !!passwordError
     }))
-  }, [validation, state.password])
+  }, [validation, state.email, state.password])
 
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {

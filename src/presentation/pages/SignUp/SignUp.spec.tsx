@@ -39,7 +39,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     <Router history={history}>
       <SignUp
         validation={validationStub}
-        addAcount={addAcountSpy}
+        addAccount={addAcountSpy}
         saveAccessToken={saveAccessTokenMock}
       />
     </Router>

@@ -5,11 +5,11 @@ export class ValidationStub implements Validation {
 
   fieldName: string
 
-  fieldValue: string
+  input: object
 
-  validate(fieldName: string, fieldValue: string): string {
+  validate(fieldName: string, input: object): string {
     this.fieldName = fieldName
-    this.fieldValue = fieldValue
+    this.input = input
     return this.errorMessage
   }
 }

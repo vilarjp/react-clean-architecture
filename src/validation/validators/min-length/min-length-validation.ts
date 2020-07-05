@@ -2,17 +2,10 @@ import { RequiredFieldValidation } from '@/validation/validators'
 import { MinLengthFieldError } from '@/validation/errors'
 
 export class MinLengthValidation implements RequiredFieldValidation {
-  readonly field: string
+  constructor(readonly field: string, private readonly length: number) {}
 
-  private readonly length: number
-
-  constructor(field: string, length: number) {
-    this.field = field
-    this.length = length
-  }
-
-  validate(value: string): Error {
-    return value.length >= this.length
+  validate(input: object): Error {
+    return input[this.field].length >= this.length
       ? null
       : new MinLengthFieldError(this.length)
   }
