@@ -26,6 +26,7 @@ type StateProps = {
   passwordError: string
   loading: boolean
   error: string
+  isFormInvalid: boolean
 }
 
 const Login: React.FC<Props> = ({
@@ -39,28 +40,33 @@ const Login: React.FC<Props> = ({
     password: '',
     passwordError: '',
     loading: false,
-    error: ''
+    error: '',
+    isFormInvalid: true
   })
   const history = useHistory()
 
   useEffect(() => {
+    const emailError = validation.validate('email', state.email)
     setState(prevState => ({
       ...prevState,
-      emailError: validation.validate('email', state.email)
+      emailError,
+      isFormInvalid: !!emailError
     }))
   }, [validation, state.email])
 
   useEffect(() => {
+    const passwordError = validation.validate('password', state.password)
     setState(prevState => ({
       ...prevState,
-      passwordError: validation.validate('password', state.password)
+      passwordError,
+      isFormInvalid: !!passwordError
     }))
   }, [validation, state.password])
 
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
       event.preventDefault()
-      if (state.loading || state.emailError || state.passwordError) return
+      if (state.loading || state.isFormInvalid) return
       try {
         setState(prevState => ({
           ...prevState,
@@ -85,10 +91,9 @@ const Login: React.FC<Props> = ({
       saveAccessToken,
       history,
       state.email,
-      state.emailError,
       state.loading,
       state.password,
-      state.passwordError
+      state.isFormInvalid
     ]
   )
 
@@ -116,7 +121,7 @@ const Login: React.FC<Props> = ({
           />
           <Button
             type="submit"
-            disabled={!!state.emailError || !!state.passwordError}
+            disabled={state.isFormInvalid}
             className={Styles.buttonWrapper}
           >
             Entrar

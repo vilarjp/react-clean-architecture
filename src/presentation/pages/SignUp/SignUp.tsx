@@ -30,6 +30,7 @@ type StateProps = {
   passwordConfirmationError: string
   loading: boolean
   error: string
+  isFormInvalid: boolean
 }
 
 const SignUp: React.FC<Props> = ({
@@ -47,52 +48,54 @@ const SignUp: React.FC<Props> = ({
     passwordConfirmation: '',
     passwordConfirmationError: '',
     loading: false,
-    error: ''
+    error: '',
+    isFormInvalid: true
   })
   const history = useHistory()
 
   useEffect(() => {
+    const nameError = validation.validate('name', state.name)
     setState(prevState => ({
       ...prevState,
-      nameError: validation.validate('name', state.name)
+      nameError,
+      isFormInvalid: !!nameError
     }))
   }, [validation, state.name])
 
   useEffect(() => {
+    const emailError = validation.validate('email', state.email)
     setState(prevState => ({
       ...prevState,
-      emailError: validation.validate('email', state.email)
+      emailError,
+      isFormInvalid: !!emailError
     }))
   }, [validation, state.email])
 
   useEffect(() => {
+    const passwordError = validation.validate('password', state.password)
     setState(prevState => ({
       ...prevState,
-      passwordError: validation.validate('password', state.password)
+      passwordError,
+      isFormInvalid: !!passwordError
     }))
   }, [validation, state.password])
 
   useEffect(() => {
+    const passwordConfirmationError = validation.validate(
+      'password',
+      state.passwordConfirmation
+    )
     setState(prevState => ({
       ...prevState,
-      passwordConfirmationError: validation.validate(
-        'password',
-        state.passwordConfirmation
-      )
+      passwordConfirmationError,
+      isFormInvalid: !!passwordConfirmationError
     }))
   }, [validation, state.passwordConfirmation])
 
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
       event.preventDefault()
-      if (
-        state.loading ||
-        state.nameError ||
-        state.emailError ||
-        state.passwordError ||
-        state.passwordConfirmationError
-      )
-        return
+      if (state.loading || state.isFormInvalid) return
       setState(prevState => ({
         ...prevState,
         loading: true
@@ -116,17 +119,14 @@ const SignUp: React.FC<Props> = ({
     },
     [
       addAcount,
+      saveAccessToken,
+      history,
       state.name,
       state.email,
       state.password,
       state.passwordConfirmation,
-      state.loading,
-      state.nameError,
-      state.emailError,
-      state.passwordError,
-      state.passwordConfirmationError,
-      history,
-      saveAccessToken
+      state.isFormInvalid,
+      state.loading
     ]
   )
 
@@ -167,12 +167,7 @@ const SignUp: React.FC<Props> = ({
           <Button
             type="submit"
             className={Styles.buttonWrapper}
-            disabled={
-              !!state.nameError ||
-              !!state.emailError ||
-              !!state.passwordError ||
-              !!state.passwordConfirmationError
-            }
+            disabled={state.isFormInvalid}
           >
             Criar
           </Button>
