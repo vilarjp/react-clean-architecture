@@ -1,5 +1,7 @@
 import faker from 'faker'
 
+const { baseUrl } = Cypress.config()
+
 describe('Login', () => {
   beforeEach(() => {
     cy.visit('/login')
@@ -56,5 +58,18 @@ describe('Login', () => {
     cy.getByTestId('button-wrap')
       .getByTestId('spinner-loading')
       .should('not.exist')
+  })
+
+  it('should save accessToken and redirects user if authentication succeeds', () => {
+    cy.getByTestId('email-input').type('mango@gmail.com')
+
+    cy.getByTestId('password-input').type('12345')
+
+    cy.getByTestId('button-wrap').click()
+    cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
+    cy.url().should('eq', `${baseUrl}/`)
+    cy.window().then(window =>
+      assert.isOk(window.localStorage.getItem('accessToken'))
+    )
   })
 })
