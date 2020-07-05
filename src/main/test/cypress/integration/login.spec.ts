@@ -4,6 +4,7 @@ const { baseUrl } = Cypress.config()
 
 describe('Login', () => {
   beforeEach(() => {
+    cy.server()
     cy.visit('/login')
   })
   it('should load page with correct initial state', () => {
@@ -46,6 +47,16 @@ describe('Login', () => {
   })
 
   it('should display error modal if authentication fails', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 401,
+      delay: 500,
+      response: {
+        error: faker.random.words()
+      }
+    })
+
     cy.getByTestId('email-input').type(faker.internet.email())
     cy.getByTestId('email-error').should('not.exist')
 
@@ -61,6 +72,14 @@ describe('Login', () => {
   })
 
   it('should save accessToken and redirects user if authentication succeeds', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 200,
+      delay: 500,
+      response: { accessToken: faker.random.uuid() }
+    })
+
     cy.getByTestId('email-input').type('mango@gmail.com')
 
     cy.getByTestId('password-input').type('12345')
