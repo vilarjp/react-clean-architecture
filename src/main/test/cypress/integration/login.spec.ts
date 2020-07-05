@@ -1,49 +1,39 @@
 import faker from 'faker'
-
-const { baseUrl } = Cypress.config()
+import * as FormHelper from '../support/form-helper'
 
 describe('Login', () => {
   beforeEach(() => {
     cy.server()
     cy.visit('/login')
   })
-  it('should load page with correct initial state', () => {
-    cy.getByTestId('email-error').should('contain.text', 'Campo obrigatório')
-    cy.getByTestId('password-error').should('contain.text', 'Campo obrigatório')
 
-    cy.getByTestId('button-wrap').should('have.attr', 'disabled')
-    cy.getByTestId('button-wrap').should('contain.text', 'Entrar')
-    cy.getByTestId('button-wrap').should('not.have.descendants')
+  it('should load page with correct initial state', () => {
+    FormHelper.testFieldState('email', '', 'Campo obrigatório')
+    FormHelper.testFieldState('password', '', 'Campo obrigatório')
+
+    FormHelper.testButtonIsDisabled('button-wrap', true, 'Entrar')
   })
 
   it('should present error state if form is invalid', () => {
-    cy.getByTestId('email-input').type(faker.random.word())
-    cy.getByTestId('email-error').should(
-      'contain.text',
+    FormHelper.testFieldState(
+      'email',
+      faker.random.word(),
       'Insira um e-mail válido'
     )
-
-    cy.getByTestId('password-input').type(faker.random.alphaNumeric(4))
-    cy.getByTestId('password-error').should(
-      'contain.text',
+    FormHelper.testFieldState(
+      'password',
+      faker.random.alphaNumeric(4),
       'O campo deve conter pelo menos 5 dígitos'
     )
 
-    cy.getByTestId('button-wrap').should('have.attr', 'disabled')
-    cy.getByTestId('button-wrap').should('contain.text', 'Entrar')
-    cy.getByTestId('button-wrap').should('not.have.descendants')
+    FormHelper.testButtonIsDisabled('button-wrap', true, 'Entrar')
   })
 
   it('should present valid state if form is valid', () => {
-    cy.getByTestId('email-input').type(faker.internet.email())
-    cy.getByTestId('email-error').should('not.exist')
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
-    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
-    cy.getByTestId('password-error').should('not.exist')
-
-    cy.getByTestId('button-wrap').should('not.have.attr', 'disabled')
-    cy.getByTestId('button-wrap').should('contain.text', 'Entrar')
-    cy.getByTestId('button-wrap').should('not.have.descendants')
+    FormHelper.testButtonIsDisabled('button-wrap', false, 'Entrar')
   })
 
   it('should display error modal if authentication fails', () => {
@@ -57,18 +47,12 @@ describe('Login', () => {
       }
     })
 
-    cy.getByTestId('email-input').type(faker.internet.email())
-    cy.getByTestId('email-error').should('not.exist')
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
-    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
-    cy.getByTestId('password-error').should('not.exist')
-
-    cy.getByTestId('button-wrap').click()
-    cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
+    FormHelper.testButtonIsLoading('button-wrap', true)
     cy.getByTestId('modal-text').should('contain.text', 'Credenciais inválidas')
-    cy.getByTestId('button-wrap')
-      .getByTestId('spinner-loading')
-      .should('not.exist')
+    FormHelper.testButtonIsLoading('button-wrap', false)
   })
 
   it('should save accessToken and redirects user if authentication succeeds', () => {
@@ -80,64 +64,32 @@ describe('Login', () => {
       response: { accessToken: faker.random.uuid() }
     })
 
-    cy.getByTestId('email-input').type(faker.internet.email())
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
-    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
-
-    cy.getByTestId('button-wrap').click()
-    cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
-    cy.url().should('eq', `${baseUrl}/`)
-    cy.window().then(window =>
-      assert.isOk(window.localStorage.getItem('accessToken'))
-    )
+    FormHelper.testButtonIsLoading('button-wrap', true)
+    FormHelper.testUrl('/')
+    FormHelper.testLocalStorageItem('accessToken')
   })
 
-  it('should show modal error if any error occours', () => {
+  it('should show modal error if unknow error occours', () => {
     cy.route({
       method: 'POST',
       url: /login/,
       status: 500,
       delay: 500,
-      response: {
-        error: faker.random.words()
-      }
+      response: {}
     })
 
-    cy.getByTestId('email-input').type(faker.internet.email())
-    cy.getByTestId('email-error').should('not.exist')
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
-    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
-    cy.getByTestId('password-error').should('not.exist')
-
-    cy.getByTestId('button-wrap').click()
-    cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
+    FormHelper.testButtonIsLoading('button-wrap', true)
     cy.getByTestId('modal-text').should(
       'contain.text',
       'Algo de errado aconteceu, por favor tente novamente.'
     )
-    cy.getByTestId('button-wrap')
-      .getByTestId('spinner-loading')
-      .should('not.exist')
-  })
-
-  it('should prevent multiple submits', () => {
-    cy.route({
-      method: 'POST',
-      url: /login/,
-      status: 200,
-      response: {
-        accessToken: faker.random.uuid()
-      }
-    }).as('loginRequest')
-
-    cy.getByTestId('email-input').type(faker.internet.email())
-    cy.getByTestId('email-error').should('not.exist')
-
-    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
-    cy.getByTestId('password-error').should('not.exist')
-
-    cy.getByTestId('button-wrap').dblclick()
-    cy.get('@loginRequest.all').should('have.length', 1)
+    FormHelper.testButtonIsLoading('button-wrap', false)
   })
 
   it('should submit form if press enter', () => {
@@ -145,17 +97,29 @@ describe('Login', () => {
       method: 'POST',
       url: /login/,
       status: 200,
-      response: {
-        accessToken: faker.random.uuid()
-      }
+      response: { accessToken: faker.random.uuid() }
     }).as('loginRequest')
 
-    cy.getByTestId('email-input').type(faker.internet.email())
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
-    cy.getByTestId('password-input')
-      .type(faker.random.alphaNumeric(5))
-      .type('{enter}')
+    cy.getByTestId('password-input').type('{enter}')
+    FormHelper.testUrl('/')
+    FormHelper.testLocalStorageItem('accessToken')
+  })
 
+  it('should prevent multiple submits', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 200,
+      response: {}
+    }).as('loginRequest')
+
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
+
+    cy.getByTestId('button-wrap').dblclick()
     cy.get('@loginRequest.all').should('have.length', 1)
   })
 })
