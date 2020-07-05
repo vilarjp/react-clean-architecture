@@ -3,7 +3,7 @@ const wp = require('@cypress/webpack-preprocessor')
 module.exports = wp({
   webpackOptions: {
     resolve: {
-      extensions: ['.ts', 'js']
+      extensions: ['.ts', '.js']
     },
     module: {
       rules: [
