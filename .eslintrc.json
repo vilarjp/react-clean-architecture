@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2020": true
+    "es2020": true,
+    "cypress/globals": true
   },
   "settings": {
     "react": {
@@ -19,7 +20,8 @@
     "prettier",
     "prettier/react",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:cypress/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -34,7 +36,8 @@
     "react-hooks",
     "@typescript-eslint",
     "prettier",
-    "jsx-a11y"
+    "jsx-a11y",
+    "cypress"
   ],
   "rules": {
     "prettier/prettier": "error",
