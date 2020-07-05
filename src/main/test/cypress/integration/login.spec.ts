@@ -42,4 +42,19 @@ describe('Login', () => {
     cy.getByTestId('button-wrap').should('contain.text', 'Entrar')
     cy.getByTestId('button-wrap').should('not.have.descendants')
   })
+
+  it('should display error modal if authentication fails', () => {
+    cy.getByTestId('email-input').type(faker.internet.email())
+    cy.getByTestId('email-error').should('not.exist')
+
+    cy.getByTestId('password-input').type(faker.random.alphaNumeric(5))
+    cy.getByTestId('password-error').should('not.exist')
+
+    cy.getByTestId('button-wrap').click()
+    cy.getByTestId('button-wrap').getByTestId('spinner-loading').should('exist')
+    cy.getByTestId('modal-text').should('contain.text', 'Credenciais inválidas')
+    cy.getByTestId('button-wrap')
+      .getByTestId('spinner-loading')
+      .should('not.exist')
+  })
 })
