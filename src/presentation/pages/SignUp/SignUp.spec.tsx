@@ -227,4 +227,16 @@ describe('SignUp Page', () => {
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/login')
   })
+
+  it('should not allow to submit form if state is loading', async () => {
+    const { sut, addAcountSpy } = makeSut()
+
+    await simulateValidSubmit(sut)
+
+    const form = sut.getByTestId('form-login')
+    fireEvent.submit(form)
+    fireEvent.submit(form)
+    fireEvent.submit(form)
+    expect(addAcountSpy.callsCount).toBe(1)
+  })
 })
