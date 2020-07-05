@@ -41,4 +41,11 @@ describe('AxiosHttpClient', () => {
     const httpResponse = sut.post(mockPostRequest())
     expect(httpResponse).toEqual(mockedAxios.post.mock.results[0].value)
   })
+
+  it('should thrown error on network failure', () => {
+    const { sut, mockedAxios } = makeSut()
+    mockedAxios.post.mockRejectedValueOnce(new Error())
+    const httpResponse = sut.post(mockPostRequest())
+    expect(httpResponse).toEqual(mockedAxios.post.mock.results[0].value)
+  })
 })
