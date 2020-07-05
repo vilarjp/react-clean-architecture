@@ -1,9 +1,7 @@
 import React, {
   DetailedHTMLProps,
   InputHTMLAttributes,
-  useContext,
-  useCallback,
-  FocusEvent
+  useContext
 } from 'react'
 import { IconBaseProps } from 'react-icons'
 import FormContext from '@/presentation/contexts/Form/FormContext'
@@ -21,16 +19,6 @@ const Input: React.FC<Props> = ({ icon: Icon, ...rest }) => {
   const { state, setState } = useContext(FormContext)
   const error = state[`${rest.name}Error`]
 
-  const handleChange = useCallback(
-    (event: FocusEvent<HTMLInputElement>): void => {
-      setState({
-        ...state,
-        [event.target.name]: event.target.value
-      })
-    },
-    [state, setState]
-  )
-
   return (
     <div
       className={Styles.inputWrapper}
@@ -41,7 +29,9 @@ const Input: React.FC<Props> = ({ icon: Icon, ...rest }) => {
         <input
           {...rest}
           data-testid={`${rest.name}-input`}
-          onChange={handleChange}
+          onChange={e => {
+            setState({ ...state, [e.target.name]: e.target.value })
+          }}
         />
       </div>
       {error && (
