@@ -69,4 +69,24 @@ describe('SignUp', () => {
     FormHelper.testButtonIsLoading('button-wrap', false)
     FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
+
+  it('should save accessToken and redirects user if authentication succeeds', () => {
+    cy.route({
+      method: 'POST',
+      url: /signup/,
+      status: 200,
+      delay: 500,
+      response: { accessToken: faker.random.uuid() }
+    })
+
+    FormHelper.testFieldState('name', faker.name.findName())
+    FormHelper.testFieldState('email', faker.internet.email())
+    const password = faker.random.alphaNumeric(5)
+    FormHelper.testFieldState('password', password)
+    FormHelper.testFieldState('passwordConfirmation', password)
+
+    FormHelper.testButtonIsLoading('button-wrap', true)
+    FormHelper.testUrl('/')
+    FormHelper.testLocalStorageItem('accessToken')
+  })
 })
