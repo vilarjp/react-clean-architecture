@@ -120,7 +120,7 @@ describe('SignUp', () => {
       url: /signup/,
       status: 200,
       response: { accessToken: faker.random.uuid() }
-    }).as('loginRequest')
+    })
 
     FormHelper.testFieldState('name', faker.name.findName())
     FormHelper.testFieldState('email', faker.internet.email())
@@ -131,5 +131,20 @@ describe('SignUp', () => {
     cy.getByTestId('passwordConfirmation-input').type('{enter}')
     FormHelper.testUrl('/')
     FormHelper.testLocalStorageItem('accessToken')
+  })
+
+  it('should prevent multiple submits', () => {
+    cy.route({
+      method: 'POST',
+      url: /login/,
+      status: 200,
+      response: {}
+    }).as('signupRequest')
+
+    FormHelper.testFieldState('email', faker.internet.email())
+    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
+
+    cy.getByTestId('button-wrap').dblclick()
+    cy.get('@signupRequest.all').should('have.length', 1)
   })
 })
