@@ -36,4 +36,14 @@ describe('SignUp', () => {
 
     FormHelper.testButtonIsDisabled('button-wrap', true, 'Criar')
   })
+
+  it('should present valid state if form is valid', () => {
+    FormHelper.testFieldState('name', faker.name.findName())
+    FormHelper.testFieldState('email', faker.internet.email())
+    const password = faker.random.alphaNumeric(5)
+    FormHelper.testFieldState('password', password)
+    FormHelper.testFieldState('passwordConfirmation', password)
+
+    FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
+  })
 })
