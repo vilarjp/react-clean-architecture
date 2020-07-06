@@ -113,4 +113,23 @@ describe('SignUp', () => {
     FormHelper.testButtonIsLoading('button-wrap', false)
     FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
+
+  it('should submit form if press enter', () => {
+    cy.route({
+      method: 'POST',
+      url: /signup/,
+      status: 200,
+      response: { accessToken: faker.random.uuid() }
+    }).as('loginRequest')
+
+    FormHelper.testFieldState('name', faker.name.findName())
+    FormHelper.testFieldState('email', faker.internet.email())
+    const password = faker.random.alphaNumeric(5)
+    FormHelper.testFieldState('password', password)
+    FormHelper.testFieldState('passwordConfirmation', password)
+
+    cy.getByTestId('passwordConfirmation-input').type('{enter}')
+    FormHelper.testUrl('/')
+    FormHelper.testLocalStorageItem('accessToken')
+  })
 })
