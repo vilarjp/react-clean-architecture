@@ -46,4 +46,27 @@ describe('SignUp', () => {
 
     FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
+
+  it('should display error modal if addaccount fails', () => {
+    cy.route({
+      method: 'POST',
+      url: /signup/,
+      status: 403,
+      delay: 500,
+      response: {
+        error: faker.random.words()
+      }
+    })
+
+    FormHelper.testFieldState('name', faker.name.findName())
+    FormHelper.testFieldState('email', faker.internet.email())
+    const password = faker.random.alphaNumeric(5)
+    FormHelper.testFieldState('password', password)
+    FormHelper.testFieldState('passwordConfirmation', password)
+
+    FormHelper.testButtonIsLoading('button-wrap', true)
+    cy.getByTestId('modal-text').should('contain.text', 'E-mail já está em uso')
+    FormHelper.testButtonIsLoading('button-wrap', false)
+    FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
+  })
 })
