@@ -4,53 +4,6 @@
   justify-content: space-between;
   min-height: 100vh;
 
-  .header {
-    display: flex;
-    justify-content: center;
-    background: var(--primary);
-    border-top: 40px solid var(--primaryDark);
-
-    .headerContent {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      max-width: 800px;
-      flex-grow: 1;
-      padding: 24px 40px;
-
-      h1 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 32px;
-        color: var(--black);
-      }
-
-      .profile {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-        align-self: center;
-        color: var(--black);
-
-        span {
-          font-size: 18px;
-          margin-bottom: 8px;
-        }
-
-        button {
-          color: var(--black);
-          background: transparent;
-          border: none;
-
-          &:hover {
-            text-decoration: underline;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
-
   .content {
     display: flex;
     flex-direction: column;
@@ -99,6 +52,13 @@
             ),
             linear-gradient(to right, var(--white), var(--white));
           background-size: 54px 100%, 100% 100%;
+          position: relative;
+
+          .iconWrap {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+          }
 
           time {
             display: flex;
