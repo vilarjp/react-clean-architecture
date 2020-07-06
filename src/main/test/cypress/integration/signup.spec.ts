@@ -1,6 +1,14 @@
 import faker from 'faker'
 import * as FormHelper from '../support/form-helper'
 
+const populateValidFields = (): void => {
+  FormHelper.testFieldState('name', faker.name.findName())
+  FormHelper.testFieldState('email', faker.internet.email())
+  const password = faker.random.alphaNumeric(5)
+  FormHelper.testFieldState('password', password)
+  FormHelper.testFieldState('passwordConfirmation', password)
+}
+
 describe('SignUp', () => {
   beforeEach(() => {
     cy.server()
@@ -38,12 +46,7 @@ describe('SignUp', () => {
   })
 
   it('should present valid state if form is valid', () => {
-    FormHelper.testFieldState('name', faker.name.findName())
-    FormHelper.testFieldState('email', faker.internet.email())
-    const password = faker.random.alphaNumeric(5)
-    FormHelper.testFieldState('password', password)
-    FormHelper.testFieldState('passwordConfirmation', password)
-
+    populateValidFields()
     FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
 
@@ -58,11 +61,7 @@ describe('SignUp', () => {
       }
     })
 
-    FormHelper.testFieldState('name', faker.name.findName())
-    FormHelper.testFieldState('email', faker.internet.email())
-    const password = faker.random.alphaNumeric(5)
-    FormHelper.testFieldState('password', password)
-    FormHelper.testFieldState('passwordConfirmation', password)
+    populateValidFields()
 
     FormHelper.testButtonIsLoading('button-wrap', true)
     cy.getByTestId('modal-text').should('contain.text', 'E-mail já está em uso')
@@ -79,11 +78,7 @@ describe('SignUp', () => {
       response: { accessToken: faker.random.uuid() }
     })
 
-    FormHelper.testFieldState('name', faker.name.findName())
-    FormHelper.testFieldState('email', faker.internet.email())
-    const password = faker.random.alphaNumeric(5)
-    FormHelper.testFieldState('password', password)
-    FormHelper.testFieldState('passwordConfirmation', password)
+    populateValidFields()
 
     FormHelper.testButtonIsLoading('button-wrap', true)
     FormHelper.testUrl('/')
@@ -99,11 +94,7 @@ describe('SignUp', () => {
       response: {}
     })
 
-    FormHelper.testFieldState('name', faker.name.findName())
-    FormHelper.testFieldState('email', faker.internet.email())
-    const password = faker.random.alphaNumeric(5)
-    FormHelper.testFieldState('password', password)
-    FormHelper.testFieldState('passwordConfirmation', password)
+    populateValidFields()
 
     FormHelper.testButtonIsLoading('button-wrap', true)
     cy.getByTestId('modal-text').should(
@@ -122,11 +113,7 @@ describe('SignUp', () => {
       response: { accessToken: faker.random.uuid() }
     })
 
-    FormHelper.testFieldState('name', faker.name.findName())
-    FormHelper.testFieldState('email', faker.internet.email())
-    const password = faker.random.alphaNumeric(5)
-    FormHelper.testFieldState('password', password)
-    FormHelper.testFieldState('passwordConfirmation', password)
+    populateValidFields()
 
     cy.getByTestId('passwordConfirmation-input').type('{enter}')
     FormHelper.testUrl('/')
@@ -141,11 +128,7 @@ describe('SignUp', () => {
       response: {}
     }).as('signupRequest')
 
-    FormHelper.testFieldState('name', faker.name.findName())
-    FormHelper.testFieldState('email', faker.internet.email())
-    const password = faker.random.alphaNumeric(5)
-    FormHelper.testFieldState('password', password)
-    FormHelper.testFieldState('passwordConfirmation', password)
+    populateValidFields()
 
     cy.getByTestId('button-wrap').dblclick()
     cy.get('@signupRequest.all').should('have.length', 1)
