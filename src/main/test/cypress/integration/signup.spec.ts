@@ -136,13 +136,16 @@ describe('SignUp', () => {
   it('should prevent multiple submits', () => {
     cy.route({
       method: 'POST',
-      url: /login/,
+      url: /signup/,
       status: 200,
       response: {}
     }).as('signupRequest')
 
+    FormHelper.testFieldState('name', faker.name.findName())
     FormHelper.testFieldState('email', faker.internet.email())
-    FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
+    const password = faker.random.alphaNumeric(5)
+    FormHelper.testFieldState('password', password)
+    FormHelper.testFieldState('passwordConfirmation', password)
 
     cy.getByTestId('button-wrap').dblclick()
     cy.get('@signupRequest.all').should('have.length', 1)
