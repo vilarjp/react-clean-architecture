@@ -33,11 +33,16 @@ export class HttpPostClientSpy<BodyType, ReponseType>
   }
 }
 
-export class HttpGetClientSpy implements HttpGetClient {
+export class HttpGetClientSpy<ReponseType>
+  implements HttpGetClient<ReponseType> {
   url: string
 
-  async get(params: HttpGetParams): Promise<void> {
+  response: HttpResponse<ReponseType> = {
+    statusCode: HttpStatusCode.ok
+  }
+
+  async get(params: HttpGetParams): Promise<HttpResponse<ReponseType>> {
     this.url = params.url
-    return Promise.resolve()
+    return Promise.resolve(this.response)
   }
 }
