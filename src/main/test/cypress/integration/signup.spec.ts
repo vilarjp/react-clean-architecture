@@ -70,7 +70,7 @@ describe('SignUp', () => {
     FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
 
-  it('should save accessToken and redirects user if authentication succeeds', () => {
+  it('should save accessToken and redirects user if addaccount succeeds', () => {
     cy.route({
       method: 'POST',
       url: /signup/,
@@ -88,5 +88,29 @@ describe('SignUp', () => {
     FormHelper.testButtonIsLoading('button-wrap', true)
     FormHelper.testUrl('/')
     FormHelper.testLocalStorageItem('accessToken')
+  })
+
+  it('should show modal error if unknow error occours', () => {
+    cy.route({
+      method: 'POST',
+      url: /signup/,
+      status: 500,
+      delay: 500,
+      response: {}
+    })
+
+    FormHelper.testFieldState('name', faker.name.findName())
+    FormHelper.testFieldState('email', faker.internet.email())
+    const password = faker.random.alphaNumeric(5)
+    FormHelper.testFieldState('password', password)
+    FormHelper.testFieldState('passwordConfirmation', password)
+
+    FormHelper.testButtonIsLoading('button-wrap', true)
+    cy.getByTestId('modal-text').should(
+      'contain.text',
+      'Algo de errado aconteceu, por favor tente novamente.'
+    )
+    FormHelper.testButtonIsLoading('button-wrap', false)
+    FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
 })
