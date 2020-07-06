@@ -34,10 +34,24 @@ export class AxiosHttpClient
   }
 
   async get(params: HttpGetParams): Promise<HttpResponse<any>> {
-    const axiosResponse = await axios.get(params.url)
-    return {
-      statusCode: axiosResponse.status,
-      body: axiosResponse.data
+    let axiosResponse: AxiosResponse
+    try {
+      axiosResponse = await axios.get(params.url)
+      return {
+        statusCode: axiosResponse.status,
+        body: axiosResponse.data
+      }
+    } catch (err) {
+      if (err.response) {
+        axiosResponse = err.response
+        return {
+          statusCode: axiosResponse.status,
+          body: axiosResponse.data
+        }
+      }
+      return {
+        statusCode: 500
+      }
     }
   }
 }

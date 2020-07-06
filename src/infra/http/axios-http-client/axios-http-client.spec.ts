@@ -72,5 +72,21 @@ describe('AxiosHttpClient', () => {
         body: axiosResponse.data
       })
     })
+
+    it('should return correct status code and body on failure via GET', () => {
+      const { sut, mockedAxios } = makeSut()
+      mockedAxios.get.mockRejectedValueOnce({
+        response: mockHttpResponse()
+      })
+      const httpResponse = sut.get(mockGetRequest())
+      expect(httpResponse).toEqual(mockedAxios.get.mock.results[0].value)
+    })
+
+    it('should thrown error on network failure via GET', () => {
+      const { sut, mockedAxios } = makeSut()
+      mockedAxios.get.mockRejectedValueOnce(new Error())
+      const httpResponse = sut.get(mockPostRequest())
+      expect(httpResponse).toEqual(mockedAxios.get.mock.results[0].value)
+    })
   })
 })
