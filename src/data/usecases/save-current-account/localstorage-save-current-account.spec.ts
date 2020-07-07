@@ -22,7 +22,7 @@ describe('LocalSaveCurrentAccount', () => {
   beforeEach(() => {
     cleanup()
   })
-  it('should call setStorage with correct value', async () => {
+  it('should call setStorage with correct value', () => {
     const { sut, setStorageMock } = makeSut()
     const account = mockAccountModel()
     sut.save(account)
@@ -30,9 +30,10 @@ describe('LocalSaveCurrentAccount', () => {
     expect(setStorageMock.value).toBe(JSON.stringify(account))
   })
 
-  it('should throw error if accessToken or name is falsy', async () => {
+  it('should throw error if accessToken or name is falsy', () => {
     const { sut } = makeSut()
-    const promise = sut.save(undefined)
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    expect(() => {
+      sut.save(undefined)
+    }).toThrow(new UnexpectedError())
   })
 })
