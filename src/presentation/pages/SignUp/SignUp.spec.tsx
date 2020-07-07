@@ -12,7 +12,7 @@ import {
   FormHelper,
   ValidationStub,
   AddAccountSpy,
-  SaveAccessTokenMock
+  SaveCurrentAccountMock
 } from '@/presentation/test'
 
 import { EmailInUseError } from '@/domain/errors'
@@ -25,7 +25,7 @@ type SutParams = {
 type SutTypes = {
   sut: RenderResult
   addAcountSpy: AddAccountSpy
-  saveAccessTokenMock: SaveAccessTokenMock
+  saveCurrentAccountMock: SaveCurrentAccountMock
 }
 
 const history = createMemoryHistory({ initialEntries: ['/signup'] })
@@ -33,14 +33,14 @@ const history = createMemoryHistory({ initialEntries: ['/signup'] })
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const addAcountSpy = new AddAccountSpy()
-  const saveAccessTokenMock = new SaveAccessTokenMock()
+  const saveCurrentAccountMock = new SaveCurrentAccountMock()
   validationStub.errorMessage = params?.validationError
   const sut = render(
     <Router history={history}>
       <SignUp
         validation={validationStub}
         addAccount={addAcountSpy}
-        saveAccessToken={saveAccessTokenMock}
+        saveCurrentAccount={saveCurrentAccountMock}
       />
     </Router>
   )
@@ -48,7 +48,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   return {
     sut,
     addAcountSpy,
-    saveAccessTokenMock
+    saveCurrentAccountMock
   }
 }
 
@@ -206,14 +206,12 @@ describe('SignUp Page', () => {
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Criar')
   })
 
-  it('should call SaveAccessToken on AddAccount success', async () => {
-    const { sut, addAcountSpy, saveAccessTokenMock } = makeSut()
+  it('should call SaveCurrentAccount on AddAccount success', async () => {
+    const { sut, addAcountSpy, saveCurrentAccountMock } = makeSut()
 
     await simulateValidSubmit(sut)
 
-    expect(saveAccessTokenMock.accessToken).toBe(
-      addAcountSpy.account.accessToken
-    )
+    expect(saveCurrentAccountMock.account).toEqual(addAcountSpy.account)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })

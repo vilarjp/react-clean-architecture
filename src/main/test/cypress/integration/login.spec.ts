@@ -55,13 +55,16 @@ describe('Login', () => {
     FormHelper.testButtonIsLoading('button-wrap', false)
   })
 
-  it('should save accessToken and redirects user if authentication succeeds', () => {
+  it('should save account and redirects user if authentication succeeds', () => {
     cy.route({
       method: 'POST',
       url: /login/,
       status: 200,
       delay: 500,
-      response: { accessToken: faker.random.uuid() }
+      response: {
+        accessToken: faker.random.uuid(),
+        name: faker.name.findName()
+      }
     })
 
     FormHelper.testFieldState('email', faker.internet.email())
@@ -69,7 +72,7 @@ describe('Login', () => {
 
     FormHelper.testButtonIsLoading('button-wrap', true)
     FormHelper.testUrl('/')
-    FormHelper.testLocalStorageItem('accessToken')
+    FormHelper.testLocalStorageItem('account')
   })
 
   it('should show modal error if unknow error occours', () => {
@@ -97,7 +100,10 @@ describe('Login', () => {
       method: 'POST',
       url: /login/,
       status: 200,
-      response: { accessToken: faker.random.uuid() }
+      response: {
+        accessToken: faker.random.uuid(),
+        name: faker.name.findName()
+      }
     }).as('loginRequest')
 
     FormHelper.testFieldState('email', faker.internet.email())
@@ -105,7 +111,7 @@ describe('Login', () => {
 
     cy.getByTestId('password-input').type('{enter}')
     FormHelper.testUrl('/')
-    FormHelper.testLocalStorageItem('accessToken')
+    FormHelper.testLocalStorageItem('account')
   })
 
   it('should prevent multiple submits', () => {

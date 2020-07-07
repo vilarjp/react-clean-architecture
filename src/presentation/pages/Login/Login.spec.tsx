@@ -11,7 +11,7 @@ import faker from 'faker'
 import {
   ValidationStub,
   AuthenticationSpy,
-  SaveAccessTokenMock,
+  SaveCurrentAccountMock,
   FormHelper
 } from '@/presentation/test'
 import { InvalidCredentialsError } from '@/domain/errors'
@@ -26,7 +26,7 @@ type SutTypes = {
   sut: RenderResult
   validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
-  saveAccessTokenMock: SaveAccessTokenMock
+  saveCurrentAccountMock: SaveCurrentAccountMock
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
@@ -34,14 +34,14 @@ const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
-  const saveAccessTokenMock = new SaveAccessTokenMock()
+  const saveCurrentAccountMock = new SaveCurrentAccountMock()
   validationStub.errorMessage = params?.validationError
   const sut = render(
     <Router history={history}>
       <Login
         validation={validationStub}
         authentication={authenticationSpy}
-        saveAccessToken={saveAccessTokenMock}
+        saveCurrentAccount={saveCurrentAccountMock}
       />
     </Router>
   )
@@ -50,7 +50,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     validationStub,
     sut,
     authenticationSpy,
-    saveAccessTokenMock
+    saveCurrentAccountMock
   }
 }
 
@@ -183,14 +183,12 @@ describe('Login Page', () => {
     FormHelper.testButtonIsDisabled(sut, 'button-wrap', false, 'Entrar')
   })
 
-  it('should call SaveAccessToken on authentication success', async () => {
-    const { sut, authenticationSpy, saveAccessTokenMock } = makeSut()
+  it('should call SaveCurrentAccount on authentication success', async () => {
+    const { sut, authenticationSpy, saveCurrentAccountMock } = makeSut()
 
     await simulateValidSubmit(sut)
 
-    expect(saveAccessTokenMock.accessToken).toBe(
-      authenticationSpy.account.accessToken
-    )
+    expect(saveCurrentAccountMock.account).toEqual(authenticationSpy.account)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })

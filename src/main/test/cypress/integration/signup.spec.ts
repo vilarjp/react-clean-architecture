@@ -69,20 +69,23 @@ describe('SignUp', () => {
     FormHelper.testButtonIsDisabled('button-wrap', false, 'Criar')
   })
 
-  it('should save accessToken and redirects user if addaccount succeeds', () => {
+  it('should save account and redirects user if addaccount succeeds', () => {
     cy.route({
       method: 'POST',
       url: /signup/,
       status: 200,
       delay: 500,
-      response: { accessToken: faker.random.uuid() }
+      response: {
+        accessToken: faker.random.uuid(),
+        name: faker.name.findName()
+      }
     })
 
     populateValidFields()
 
     FormHelper.testButtonIsLoading('button-wrap', true)
     FormHelper.testUrl('/')
-    FormHelper.testLocalStorageItem('accessToken')
+    FormHelper.testLocalStorageItem('account')
   })
 
   it('should show modal error if unknow error occours', () => {
@@ -110,14 +113,17 @@ describe('SignUp', () => {
       method: 'POST',
       url: /signup/,
       status: 200,
-      response: { accessToken: faker.random.uuid() }
+      response: {
+        accessToken: faker.random.uuid(),
+        name: faker.name.findName()
+      }
     })
 
     populateValidFields()
 
     cy.getByTestId('passwordConfirmation-input').type('{enter}')
     FormHelper.testUrl('/')
-    FormHelper.testLocalStorageItem('accessToken')
+    FormHelper.testLocalStorageItem('account')
   })
 
   it('should prevent multiple submits', () => {

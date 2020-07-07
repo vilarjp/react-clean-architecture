@@ -10,13 +10,13 @@ import {
 } from '@/presentation/components'
 import FormContext from '@/presentation/contexts/Form/FormContext'
 import { Validation } from '@/presentation/protocols/validation'
-import { AddAccount, SaveAccessToken } from '@/domain/usecases'
+import { AddAccount, SaveCurrentAccount } from '@/domain/usecases'
 import Styles from './SignUp-styles.scss'
 
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  saveAccessToken: SaveAccessToken
+  saveCurrentAccount: SaveCurrentAccount
 }
 
 type StateProps = {
@@ -36,7 +36,7 @@ type StateProps = {
 const SignUp: React.FC<Props> = ({
   validation,
   addAccount,
-  saveAccessToken
+  saveCurrentAccount
 }: Props) => {
   const [state, setState] = useState<StateProps>({
     name: '',
@@ -102,7 +102,7 @@ const SignUp: React.FC<Props> = ({
           password: state.password,
           passwordConfirmation: state.passwordConfirmation
         })
-        await saveAccessToken.save(account.accessToken)
+        await saveCurrentAccount.save(account)
         history.replace('/')
       } catch (err) {
         setState(prevState => ({
@@ -114,7 +114,7 @@ const SignUp: React.FC<Props> = ({
     },
     [
       addAccount,
-      saveAccessToken,
+      saveCurrentAccount,
       history,
       state.name,
       state.email,
