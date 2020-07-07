@@ -1,4 +1,3 @@
-import faker from 'faker'
 import { SetStorageMock } from '@/data/test'
 import { UnexpectedError } from '@/domain/errors'
 import { cleanup } from '@testing-library/react'
