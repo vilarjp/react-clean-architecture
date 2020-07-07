@@ -1,18 +1,24 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { makeLogin, makeSignUp } from '@/main/factories/pages'
+import { APIContext } from '@/presentation/contexts'
+import { saveCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
 
 import { SurveyList } from '@/presentation/pages'
 
 const Router: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/login" exact component={makeLogin} />
-        <Route path="/signup" exact component={makeSignUp} />
-        <Route path="/" exact component={SurveyList} />
-      </Switch>
-    </BrowserRouter>
+    <APIContext.Provider
+      value={{ saveCurrentAccount: saveCurrentAccountAdapter }}
+    >
+      <BrowserRouter>
+        <Switch>
+          <Route path="/login" exact component={makeLogin} />
+          <Route path="/signup" exact component={makeSignUp} />
+          <Route path="/" exact component={SurveyList} />
+        </Switch>
+      </BrowserRouter>
+    </APIContext.Provider>
   )
 }
 

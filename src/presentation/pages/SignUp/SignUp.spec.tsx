@@ -8,14 +8,11 @@ import {
 } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import {
-  FormHelper,
-  ValidationStub,
-  AddAccountSpy,
-  SaveCurrentAccountMock
-} from '@/presentation/test'
-
+import { FormHelper, ValidationStub, AddAccountSpy } from '@/presentation/test'
 import { EmailInUseError } from '@/domain/errors'
+import { APIContext } from '@/presentation/contexts'
+import { AccountModel } from '@/domain/models'
+
 import SignUp from './SignUp'
 
 type SutParams = {
@@ -25,24 +22,22 @@ type SutParams = {
 type SutTypes = {
   sut: RenderResult
   addAcountSpy: AddAccountSpy
-  saveCurrentAccountMock: SaveCurrentAccountMock
+  saveCurrentAccountMock: (account: AccountModel) => void
 }
 
 const history = createMemoryHistory({ initialEntries: ['/signup'] })
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
-  const addAcountSpy = new AddAccountSpy()
-  const saveCurrentAccountMock = new SaveCurrentAccountMock()
   validationStub.errorMessage = params?.validationError
+  const addAcountSpy = new AddAccountSpy()
+  const saveCurrentAccountMock = jest.fn()
   const sut = render(
-    <Router history={history}>
-      <SignUp
-        validation={validationStub}
-        addAccount={addAcountSpy}
-        saveCurrentAccount={saveCurrentAccountMock}
-      />
-    </Router>
+    <APIContext.Provider value={{ saveCurrentAccount: saveCurrentAccountMock }}>
+      <Router history={history}>
+        <SignUp validation={validationStub} addAccount={addAcountSpy} />
+      </Router>
+    </APIContext.Provider>
   )
 
   return {
@@ -211,7 +206,7 @@ describe('SignUp Page', () => {
 
     await simulateValidSubmit(sut)
 
-    expect(saveCurrentAccountMock.account).toEqual(addAcountSpy.account)
+    expect(saveCurrentAccountMock).toHaveBeenCalledWith(addAcountSpy.account)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FiUser, FiMail, FiLock } from 'react-icons/fi'
 import {
@@ -8,15 +8,14 @@ import {
   Button,
   Modal
 } from '@/presentation/components'
-import FormContext from '@/presentation/contexts/Form/FormContext'
+import { FormContext, APIContext } from '@/presentation/contexts'
 import { Validation } from '@/presentation/protocols/validation'
-import { AddAccount, SaveCurrentAccount } from '@/domain/usecases'
+import { AddAccount } from '@/domain/usecases'
 import Styles from './SignUp-styles.scss'
 
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  saveCurrentAccount: SaveCurrentAccount
 }
 
 type StateProps = {
@@ -33,11 +32,7 @@ type StateProps = {
   isFormInvalid: boolean
 }
 
-const SignUp: React.FC<Props> = ({
-  validation,
-  addAccount,
-  saveCurrentAccount
-}: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const [state, setState] = useState<StateProps>({
     name: '',
     nameError: '',
@@ -52,6 +47,7 @@ const SignUp: React.FC<Props> = ({
     isFormInvalid: true
   })
   const history = useHistory()
+  const { saveCurrentAccount } = useContext(APIContext)
 
   useEffect(() => {
     const formData = {
@@ -102,7 +98,7 @@ const SignUp: React.FC<Props> = ({
           password: state.password,
           passwordConfirmation: state.passwordConfirmation
         })
-        await saveCurrentAccount.save(account)
+        saveCurrentAccount(account)
         history.replace('/')
       } catch (err) {
         setState(prevState => ({

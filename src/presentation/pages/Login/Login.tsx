@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FiMail, FiLock } from 'react-icons/fi'
 import {
@@ -9,14 +9,13 @@ import {
   Modal
 } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
-import { Authentication, SaveCurrentAccount } from '@/domain/usecases'
-import FormContext from '@/presentation/contexts/Form/FormContext'
+import { Authentication } from '@/domain/usecases'
+import { FormContext, APIContext } from '@/presentation/contexts'
 import Styles from './Login-styles.scss'
 
 type Props = {
   validation: Validation
   authentication: Authentication
-  saveCurrentAccount: SaveCurrentAccount
 }
 
 type StateProps = {
@@ -29,11 +28,7 @@ type StateProps = {
   isFormInvalid: boolean
 }
 
-const Login: React.FC<Props> = ({
-  validation,
-  authentication,
-  saveCurrentAccount
-}: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const [state, setState] = useState<StateProps>({
     email: '',
     emailError: '',
@@ -44,6 +39,7 @@ const Login: React.FC<Props> = ({
     isFormInvalid: true
   })
   const history = useHistory()
+  const { saveCurrentAccount } = useContext(APIContext)
 
   useEffect(() => {
     const formData = { email: state.email, password: state.password }
@@ -70,7 +66,7 @@ const Login: React.FC<Props> = ({
           email: state.email,
           password: state.password
         })
-        await saveCurrentAccount.save(account)
+        saveCurrentAccount(account)
         history.replace('/')
       } catch (err) {
         setState(prevState => ({
