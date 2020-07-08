@@ -1,17 +1,17 @@
 import { mockAxios, mockHttpResponse } from '@/infra/test'
 import { mockPostRequest, mockGetRequest } from '@/data/test'
 import axios from 'axios'
-import { AxiosHttpClient } from './axios-http-client'
+import { AxiosHttpAdapter } from './axios-http-adapter'
 
 jest.mock('axios')
 
 type SutTypes = {
-  sut: AxiosHttpClient
+  sut: AxiosHttpAdapter
   mockedAxios: jest.Mocked<typeof axios>
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new AxiosHttpClient()
+  const sut = new AxiosHttpAdapter()
   const mockedAxios = mockAxios()
   return {
     sut,
@@ -19,7 +19,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('AxiosHttpClient', () => {
+describe('AxiosHttpAdapter', () => {
   describe('POST', () => {
     it('should call axios with correct url and body via POST', async () => {
       const request = mockPostRequest()

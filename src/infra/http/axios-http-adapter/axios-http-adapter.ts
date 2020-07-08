@@ -7,7 +7,7 @@ import {
 } from '@/data/protocols/http'
 import axios, { AxiosResponse } from 'axios'
 
-export class AxiosHttpClient
+export class AxiosHttpAdapter
   implements
     HttpPostClient<HttpPostParams<any>, HttpResponse<any>>,
     HttpGetClient<HttpResponse<any>> {

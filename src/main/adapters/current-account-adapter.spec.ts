@@ -1,6 +1,7 @@
 import { mockAccountModel } from '@/domain/test'
 import { LocalStorageAdapter } from '@/infra/cache/localstorage-adapter'
 import { UnexpectedError } from '@/domain/errors'
+import faker from 'faker'
 import {
   saveCurrentAccountAdapter,
   getCurrentAccountAdapter
@@ -18,7 +19,19 @@ describe('CurrentAccountAdapter', () => {
 
   it('should thrown UnexpectedError if incorrect values provided', () => {
     expect(() => {
-      saveCurrentAccountAdapter(undefined)
+      saveCurrentAccountAdapter({
+        accessToken: faker.random.uuid(),
+        name: undefined
+      })
+    }).toThrow(new UnexpectedError())
+  })
+
+  it('should thrown UnexpectedError if incorrect values provided', () => {
+    expect(() => {
+      saveCurrentAccountAdapter({
+        accessToken: undefined,
+        name: faker.name.findName()
+      })
     }).toThrow(new UnexpectedError())
   })
 
