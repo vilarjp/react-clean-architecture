@@ -31,7 +31,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     <div className={Styles.surveyList}>
       <Header />
       <div className={Styles.content}>
-        <h2>Enquetes</h2>
+        <h2>Paradas</h2>
         <SurveyContext.Provider value={{ state, setState }}>
           {state.error ? <Error /> : <List />}
         </SurveyContext.Provider>

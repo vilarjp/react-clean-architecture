@@ -40,7 +40,7 @@ describe('SurveyList Page', () => {
   it('should call LoadSurveyList', async () => {
     const { loadSurveyListSpy } = makeSut()
     expect(loadSurveyListSpy.callsCount).toBe(1)
-    await waitFor(() => screen.getByText('Enquetes'))
+    await waitFor(() => screen.getByText('Paradas'))
   })
 
   it('should render SurveyCards on success', async () => {
@@ -57,7 +57,7 @@ describe('SurveyList Page', () => {
     const error = new UnexpectedError()
     jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(error)
     makeSut(loadSurveyListSpy)
-    await waitFor(() => screen.getByText('Enquetes'))
+    await waitFor(() => screen.getByText('Paradas'))
     expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument()
     expect(screen.getByTestId('error')).toHaveTextContent(error.message)
   })
