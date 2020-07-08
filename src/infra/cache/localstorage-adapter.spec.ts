@@ -21,7 +21,7 @@ describe('LocalStorageAdapter', () => {
     )
   })
 
-  it('should call localstorage getIterm with correct value', () => {
+  it('should call localstorage getItem with correct value', () => {
     const sut = makeSut()
     const key = faker.database.column()
     const value = faker.random.objectElement<AccountModel>()
