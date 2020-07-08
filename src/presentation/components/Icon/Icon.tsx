@@ -16,7 +16,12 @@ const Icon: React.FC<Props> = ({ iconName, className }: Props) => {
 
   return (
     <div className={`${Styles.iconWrap} ${iconColor} ${className || ''}`}>
-      <img className={Styles.icon} src={iconName} alt="icon" />
+      <img
+        data-testid="icon"
+        className={Styles.icon}
+        src={iconName}
+        alt="icon"
+      />
     </div>
   )
 }
