@@ -36,7 +36,7 @@ export class AxiosHttpClient
   async get(params: HttpGetParams): Promise<HttpResponse<any>> {
     let axiosResponse: AxiosResponse
     try {
-      axiosResponse = await axios.get(params.url)
+      axiosResponse = await axios.get(params.url, { headers: params.headers })
       return {
         statusCode: axiosResponse.status,
         body: axiosResponse.data
