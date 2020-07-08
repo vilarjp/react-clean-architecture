@@ -1,0 +1,88 @@
+.surveyCard {
+  height: 250px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 8px;
+  flex-basis: 48%;
+  margin-bottom: 24px;
+  box-shadow: 0px 1px 3px -1px var(--black);
+
+  .surveyContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 8px 8px 0px 0px;
+    flex-grow: 1;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(
+        to right,
+        rgba(234, 226, 183, 0.4),
+        rgba(234, 226, 183, 0.4)
+      ),
+      linear-gradient(to right, var(--white), var(--white));
+    background-size: 54px 100%, 100% 100%;
+    position: relative;
+
+    .iconWrap {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+    }
+
+    time {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: var(--primaryLight);
+      color: var(--black);
+      border-radius: 8px;
+      margin-left: 24px;
+      align-self: center;
+      width: 60px;
+      height: 100px;
+      flex-shrink: 0;
+
+      .day {
+        font-size: 40px;
+        font-weight: bold;
+      }
+      .month {
+        text-transform: lowercase;
+        margin: 0px 0px 5px;
+      }
+      .year {
+        font-size: 16px;
+      }
+    }
+
+    p {
+      font-size: 18px;
+      margin: 24px;
+      align-self: center;
+      flex-grow: 1;
+    }
+  }
+
+  footer {
+    background: var(--primary);
+    color: var(--black);
+    line-height: 40px;
+    text-transform: lowercase;
+    text-align: center;
+    border-radius: 0px 0px 8px 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--primaryDark);
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .surveyCard {
+    flex-basis: 100%;
+  }
+}
