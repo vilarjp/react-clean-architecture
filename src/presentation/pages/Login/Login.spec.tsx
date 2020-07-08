@@ -61,8 +61,9 @@ describe('Login Page', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
 
-    FormHelper.testChildCount('button-wrap', 0)
-    FormHelper.testButtonIsDisabled('button-wrap', true, 'Entrar')
+    expect(screen.getByTestId('button-wrap').children).toHaveLength(0)
+    expect(screen.getByTestId('button-wrap')).toBeDisabled()
+
     FormHelper.testFieldState('email', validationError)
     FormHelper.testFieldState('password', validationError)
   })
@@ -121,7 +122,7 @@ describe('Login Page', () => {
     FormHelper.populateField('email', faker.internet.email())
     FormHelper.populateField('password', faker.internet.password())
 
-    FormHelper.testButtonIsDisabled('button-wrap', false, 'Entrar')
+    expect(screen.getByTestId('button-wrap')).toBeEnabled()
   })
 
   it('should display spinner on submit', async () => {
@@ -129,9 +130,9 @@ describe('Login Page', () => {
 
     await simulateValidSubmit()
 
-    FormHelper.testChildCount('button-wrap', 1)
-    FormHelper.testButtonIsDisabled('button-wrap', true, '')
-    FormHelper.testElementExists('spinner-loading')
+    expect(screen.getByTestId('button-wrap').children).toHaveLength(1)
+    expect(screen.getByTestId('button-wrap')).toBeDisabled()
+    expect(screen.queryByTestId('spinner-loading')).toBeInTheDocument()
   })
 
   it('should call authentication with correct values', async () => {
@@ -168,8 +169,8 @@ describe('Login Page', () => {
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
     await simulateValidSubmit()
 
-    FormHelper.testElementTextContent('modal-text', error.message)
-    FormHelper.testButtonIsDisabled('button-wrap', false, 'Entrar')
+    expect(screen.getByTestId('modal-text')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('button-wrap')).toBeEnabled()
   })
 
   it('should call SaveCurrentAccount on authentication success', async () => {
