@@ -3,8 +3,10 @@ import { Footer, Header } from '@/presentation/components'
 import { LoadSurveyList } from '@/domain/usecases'
 import { SurveyModel } from '@/domain/models'
 import Styles from './SurveyList-styles.scss'
-import SurveyCardLoading from './components/SurveyCardLoading/SurveyCardLoading'
-import SurveyCard from './components/SurveyCard/SurveyCard'
+import List from './components/List/List'
+import Error from './components/Error/Error'
+
+import SurveyContext from './context/SurveyContext'
 
 type Props = {
   loadSurveyList: LoadSurveyList
@@ -19,8 +21,10 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
   useEffect(() => {
     loadSurveyList
       .loadAll()
-      .then(surveys => setState({ ...state, surveys }))
-      .catch(err => setState({ ...state, error: err.message }))
+      .then(surveys => setState(prevState => ({ ...prevState, surveys })))
+      .catch(err =>
+        setState(prevState => ({ ...prevState, error: err.message }))
+      )
   }, [loadSurveyList])
 
   return (
@@ -28,21 +32,9 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
       <Header />
       <div className={Styles.content}>
         <h2>Enquetes</h2>
-        {state.error ? (
-          <div>
-            <span data-testid="error">{state.error}</span>
-          </div>
-        ) : (
-          <ul data-testid="survey-list">
-            {state.surveys.length ? (
-              state.surveys.map((survey: SurveyModel) => (
-                <SurveyCard key={survey.id} survey={survey} />
-              ))
-            ) : (
-              <SurveyCardLoading />
-            )}
-          </ul>
-        )}
+        <SurveyContext.Provider value={{ state, setState }}>
+          {state.error ? <Error /> : <List />}
+        </SurveyContext.Provider>
       </div>
       <Footer />
     </div>
