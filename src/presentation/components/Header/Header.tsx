@@ -1,16 +1,16 @@
 import React, { memo, useCallback, useContext } from 'react'
 import { APIContext } from '@/presentation/contexts'
-import { useHistory } from 'react-router-dom'
+import { useLogout } from '@/presentation/hooks'
+
 import Styles from './Header-styles.scss'
 
 const Header: React.FC = () => {
-  const { saveCurrentAccount, getCurrentAccount } = useContext(APIContext)
-  const history = useHistory()
+  const logout = useLogout()
+  const { getCurrentAccount } = useContext(APIContext)
 
-  const logout = useCallback(() => {
-    saveCurrentAccount(undefined)
-    history.replace('/login')
-  }, [saveCurrentAccount, history])
+  const handleLogout = useCallback(() => {
+    logout()
+  }, [logout])
 
   return (
     <header className={Styles.header}>
@@ -18,7 +18,11 @@ const Header: React.FC = () => {
         <h1>Pare Aqui</h1>
         <div className={Styles.profile}>
           <span data-testid="username">{getCurrentAccount().name}</span>
-          <button data-testid="logout-button" type="button" onClick={logout}>
+          <button
+            data-testid="logout-button"
+            type="button"
+            onClick={handleLogout}
+          >
             Sair
           </button>
         </div>
