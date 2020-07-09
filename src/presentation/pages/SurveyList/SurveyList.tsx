@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import { Footer, Header } from '@/presentation/components'
 import { LoadSurveyList } from '@/domain/usecases'
 import { SurveyModel } from '@/domain/models'
-import { AccessDeniedError } from '@/domain/errors'
-import { APIContext } from '@/presentation/contexts'
+import { useErrorHandler } from '@/presentation/hooks'
 import List from './components/List/List'
 import Error from './components/Error/Error'
 import SurveyContext from './context/SurveyContext'
@@ -20,22 +18,17 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     surveys: [] as SurveyModel[],
     error: ''
   })
-  const { saveCurrentAccount } = useContext(APIContext)
-  const history = useHistory()
+  const handleError = useErrorHandler((error: Error) => {
+    setState({ ...state, error: error.message })
+  })
 
   useEffect(() => {
     loadSurveyList
       .loadAll()
       .then(surveys => setState(prevState => ({ ...prevState, surveys })))
-      .catch(err => {
-        if (err instanceof AccessDeniedError) {
-          saveCurrentAccount(undefined)
-          history.replace('/login')
-        } else {
-          setState(prevState => ({ ...prevState, error: err.message }))
-        }
-      })
-  }, [loadSurveyList, saveCurrentAccount, history])
+      .catch(handleError)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadSurveyList])
 
   return (
     <div className={Styles.surveyList}>
