@@ -5,9 +5,9 @@
   box-shadow: 0px 1px 3px -1px var(--black);
 
   &.red {
-    background: var(--warn);
+    background-color: var(--warn);
   }
   &.green {
-    background: var(--success);
+    background-color: var(--success);
   }
 }
