@@ -5,7 +5,6 @@ type CallbackType = (error: Error) => void
 type ReturnType = CallbackType
 
 export const useErrorHandler = (callback: CallbackType): ReturnType => {
-  console.log(callback)
   const logout = useLogout()
 
   return (error: Error): void => {
