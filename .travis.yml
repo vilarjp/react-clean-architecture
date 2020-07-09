@@ -4,3 +4,8 @@ node_js:
 script:
   - eslint 'src/**'
   - yarn test:coveralls
+build:
+  provider: heroku
+  api_key: $HEROKU_API
+  app: pareaqui-react
+  skip_cleanup: true
