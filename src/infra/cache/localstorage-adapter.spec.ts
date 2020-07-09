@@ -20,6 +20,13 @@ describe('LocalStorageAdapter', () => {
     )
   })
 
+  it('should call localstorage removeItem if value is null or undefined', () => {
+    const sut = makeSut()
+    const key = faker.database.column()
+    sut.set(key, undefined)
+    expect(localStorage.removeItem).toHaveBeenCalledWith(key)
+  })
+
   it('should call localstorage getItem with correct value', () => {
     const sut = makeSut()
     const key = faker.database.column()
