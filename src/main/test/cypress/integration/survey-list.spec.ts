@@ -35,4 +35,17 @@ describe('Surveyist', () => {
     cy.visit('/')
     Helper.testUrl('/login')
   })
+
+  it('should present correct username', () => {
+    cy.route({
+      method: 'GET',
+      url: /surveys/,
+      status: 500,
+      response: {}
+    })
+    cy.visit('/')
+    const { name } = Helper.getLocalStorageItem('account')
+
+    cy.getByTestId('username').should('contain.text', name)
+  })
 })
