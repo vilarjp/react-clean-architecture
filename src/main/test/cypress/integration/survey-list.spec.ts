@@ -1,5 +1,7 @@
 import faker from 'faker'
-import * as Helper from '../support/helpers'
+import * as Helper from '../utils/helpers'
+
+const path = /surveys/
 
 describe('Surveyist', () => {
   beforeEach(() => {
@@ -13,7 +15,7 @@ describe('Surveyist', () => {
   it('should present error if UnexpectedError', () => {
     cy.route({
       method: 'GET',
-      url: /surveys/,
+      url: path,
       status: 500,
       response: {}
     })
@@ -28,7 +30,7 @@ describe('Surveyist', () => {
   it('should logout on AccessDeniedError', () => {
     cy.route({
       method: 'GET',
-      url: /surveys/,
+      url: path,
       status: 403,
       response: {}
     })
@@ -39,7 +41,7 @@ describe('Surveyist', () => {
   it('should present correct username', () => {
     cy.route({
       method: 'GET',
-      url: /surveys/,
+      url: path,
       status: 500,
       response: {}
     })
@@ -52,7 +54,7 @@ describe('Surveyist', () => {
   it('should logout on click logout-button', () => {
     cy.route({
       method: 'GET',
-      url: /surveys/,
+      url: path,
       status: 500,
       response: {}
     })

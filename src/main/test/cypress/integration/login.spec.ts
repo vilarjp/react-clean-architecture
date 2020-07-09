@@ -1,6 +1,8 @@
 import faker from 'faker'
-import * as FormHelper from '../support/form-helper'
-import * as Helper from '../support/helpers'
+import * as FormHelper from '../utils/form-helper'
+import * as Helper from '../utils/helpers'
+
+const path = /login/
 
 describe('Login', () => {
   beforeEach(() => {
@@ -40,7 +42,7 @@ describe('Login', () => {
   it('should display error modal if authentication fails', () => {
     cy.route({
       method: 'POST',
-      url: /login/,
+      url: path,
       status: 401,
       delay: 500,
       response: {
@@ -59,7 +61,7 @@ describe('Login', () => {
   it('should save account and redirects user if authentication succeeds', () => {
     cy.route({
       method: 'POST',
-      url: /login/,
+      url: path,
       status: 200,
       delay: 500,
       response: {
@@ -79,7 +81,7 @@ describe('Login', () => {
   it('should show modal error if unknow error occours', () => {
     cy.route({
       method: 'POST',
-      url: /login/,
+      url: path,
       status: 500,
       delay: 500,
       response: {}
@@ -99,7 +101,7 @@ describe('Login', () => {
   it('should submit form if press enter', () => {
     cy.route({
       method: 'POST',
-      url: /login/,
+      url: path,
       status: 200,
       response: {
         accessToken: faker.random.uuid(),
@@ -118,7 +120,7 @@ describe('Login', () => {
   it('should prevent multiple submits', () => {
     cy.route({
       method: 'POST',
-      url: /login/,
+      url: path,
       status: 200,
       response: {}
     }).as('loginRequest')

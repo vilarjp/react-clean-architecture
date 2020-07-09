@@ -1,6 +1,8 @@
 import faker from 'faker'
-import * as FormHelper from '../support/form-helper'
-import * as Helper from '../support/helpers'
+import * as FormHelper from '../utils/form-helper'
+import * as Helper from '../utils/helpers'
+
+const path = /signup/
 
 const populateValidFields = (): void => {
   FormHelper.testFieldState('name', faker.name.findName())
@@ -54,7 +56,7 @@ describe('SignUp', () => {
   it('should display error modal if addaccount fails', () => {
     cy.route({
       method: 'POST',
-      url: /signup/,
+      url: path,
       status: 403,
       delay: 500,
       response: {
@@ -73,7 +75,7 @@ describe('SignUp', () => {
   it('should save account and redirects user if addaccount succeeds', () => {
     cy.route({
       method: 'POST',
-      url: /signup/,
+      url: path,
       status: 200,
       delay: 500,
       response: {
@@ -92,7 +94,7 @@ describe('SignUp', () => {
   it('should show modal error if unknow error occours', () => {
     cy.route({
       method: 'POST',
-      url: /signup/,
+      url: path,
       status: 500,
       delay: 500,
       response: {}
@@ -112,7 +114,7 @@ describe('SignUp', () => {
   it('should submit form if press enter', () => {
     cy.route({
       method: 'POST',
-      url: /signup/,
+      url: path,
       status: 200,
       response: {
         accessToken: faker.random.uuid(),
@@ -130,7 +132,7 @@ describe('SignUp', () => {
   it('should prevent multiple submits', () => {
     cy.route({
       method: 'POST',
-      url: /signup/,
+      url: path,
       status: 200,
       response: {}
     }).as('signupRequest')

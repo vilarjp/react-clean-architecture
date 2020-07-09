@@ -1,4 +1,4 @@
-import * as Helper from '../support/helpers'
+import * as Helper from '../utils/helpers'
 
 describe('PrivateRoutes', () => {
   it('should logout if SurveyList has no token', () => {
