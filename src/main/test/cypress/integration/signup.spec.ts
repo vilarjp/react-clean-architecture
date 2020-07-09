@@ -1,5 +1,6 @@
 import faker from 'faker'
 import * as FormHelper from '../support/form-helper'
+import * as Helper from '../support/helpers'
 
 const populateValidFields = (): void => {
   FormHelper.testFieldState('name', faker.name.findName())
@@ -84,8 +85,8 @@ describe('SignUp', () => {
     populateValidFields()
 
     FormHelper.testButtonIsLoading('button-wrap', true)
-    FormHelper.testUrl('/')
-    FormHelper.testLocalStorageItem('account')
+    Helper.testUrl('/')
+    Helper.testLocalStorageItem('account')
   })
 
   it('should show modal error if unknow error occours', () => {
@@ -122,8 +123,8 @@ describe('SignUp', () => {
     populateValidFields()
 
     cy.getByTestId('passwordConfirmation-input').type('{enter}')
-    FormHelper.testUrl('/')
-    FormHelper.testLocalStorageItem('account')
+    Helper.testUrl('/')
+    Helper.testLocalStorageItem('account')
   })
 
   it('should prevent multiple submits', () => {
