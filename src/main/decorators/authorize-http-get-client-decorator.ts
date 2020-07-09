@@ -20,7 +20,7 @@ export class AuthrorizeHttpGetClientDecorator implements HttpGetClient {
         })
       })
     }
-    await this.httpGetClient.get(params)
-    return null
+    const httpReponse = await this.httpGetClient.get(params)
+    return httpReponse
   }
 }
