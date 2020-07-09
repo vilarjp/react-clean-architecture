@@ -21,7 +21,6 @@ export class AuthrorizeHttpGetClientDecorator implements HttpGetClient {
       })
     }
     const httpReponse = await this.httpGetClient.get(params)
-    console.log(httpReponse)
     return httpReponse
   }
 }
