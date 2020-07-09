@@ -13,6 +13,5 @@ module.exports = {
       '@': path.join(__dirname, 'src')
     }
   },
-  plugins: [new CleanWebpackPlugin()],
-  devtool: 'inline-source-map'
+  plugins: [new CleanWebpackPlugin()]
 }

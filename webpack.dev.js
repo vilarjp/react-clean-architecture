@@ -18,7 +18,9 @@ module.exports = merge(common, {
       }
     ]
   },
+  devtool: 'inline-source-map',
   devServer: {
+    contentBase: '/.public',
     writeToDisk: true,
     historyApiFallback: true,
     port: 3000
@@ -30,6 +32,5 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       template: './template.dev.html'
     })
-  ],
-  devtool: 'inline-source-map'
+  ]
 })
