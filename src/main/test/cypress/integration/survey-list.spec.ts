@@ -24,4 +24,15 @@ describe('Surveyist', () => {
       'Algo de errado aconteceu, por favor tente novamente.'
     )
   })
+
+  it('should logout on AccessDeniedError', () => {
+    cy.route({
+      method: 'GET',
+      url: /surveys/,
+      status: 403,
+      response: {}
+    })
+    cy.visit('/')
+    Helper.testUrl('/login')
+  })
 })
