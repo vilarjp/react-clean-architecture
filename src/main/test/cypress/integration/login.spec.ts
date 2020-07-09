@@ -129,6 +129,7 @@ describe('Login', () => {
     FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
     cy.getByTestId('button-wrap').dblclick()
+    cy.wait('@loginRequest')
     cy.get('@loginRequest.all').should('have.length', 1)
   })
 })

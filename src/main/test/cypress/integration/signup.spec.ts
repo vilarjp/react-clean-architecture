@@ -140,6 +140,7 @@ describe('SignUp', () => {
     populateValidFields()
 
     cy.getByTestId('button-wrap').dblclick()
+    cy.wait('@signupRequest')
     cy.get('@signupRequest.all').should('have.length', 1)
   })
 })
