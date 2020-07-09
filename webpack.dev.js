@@ -19,7 +19,6 @@ module.exports = merge(common, {
     ]
   },
   devServer: {
-    contentBase: './dist',
     writeToDisk: true,
     historyApiFallback: true,
     port: 3000
