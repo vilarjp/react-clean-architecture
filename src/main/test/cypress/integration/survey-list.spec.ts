@@ -3,7 +3,7 @@ import * as Helper from '../utils/helpers'
 
 const path = /surveys/
 
-describe('Surveyist', () => {
+describe('SurveyList', () => {
   beforeEach(() => {
     Helper.setLocalStorageItem('account', {
       accessToken: faker.random.uuid(),
