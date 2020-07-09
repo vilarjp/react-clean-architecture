@@ -2,6 +2,7 @@ import faker from 'faker'
 import { HttpGetClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
+import { mockSurveyResultModel } from '@/domain/test'
 import { RemoteLoadSurveyResult } from './remote-load-survey-result'
 
 type SutTypes = {
@@ -51,5 +52,16 @@ describe('RemoteLoadSurveyResult', () => {
     }
     const promise = sut.load()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('shoud return a SurveyResult if HttpGetClient returns 200', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    const httpResult = mockSurveyResultModel()
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+    const surveyResult = await sut.load()
+    expect(surveyResult).toEqual(httpResult)
   })
 })
