@@ -48,4 +48,17 @@ describe('Surveyist', () => {
 
     cy.getByTestId('username').should('contain.text', name)
   })
+
+  it('should logout on click logout-button', () => {
+    cy.route({
+      method: 'GET',
+      url: /surveys/,
+      status: 500,
+      response: {}
+    })
+    cy.visit('/')
+    cy.getByTestId('logout-button').click()
+    Helper.testUrl('/login')
+    Helper.testLocalStorageItemIsNull('account')
+  })
 })
