@@ -3,7 +3,7 @@ import { SignUp } from '@/presentation/pages'
 import { makeRemoteAddAccount } from '@/main/factories/usecases'
 import { makeSignUpValidation } from './signup-validation-factory'
 
-export const makeSignUp: React.FC = () => {
+export const MakeSignUp: React.FC = () => {
   return (
     <SignUp
       validation={makeSignUpValidation()}

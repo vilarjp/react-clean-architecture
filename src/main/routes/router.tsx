@@ -1,13 +1,17 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { makeLogin, makeSignUp, makeSurveyList } from '@/main/factories/pages'
+import {
+  MakeLogin,
+  MakeSignUp,
+  MakeSurveyList,
+  MakeSurveyResult
+} from '@/main/factories/pages'
 import { APIContext } from '@/presentation/contexts'
 import {
   saveCurrentAccountAdapter,
   getCurrentAccountAdapter
 } from '@/main/adapters/current-account-adapter'
 import { PrivateRoute } from '@/presentation/components'
-import { SurveyResult } from '@/presentation/pages'
 
 const Router: React.FC = () => {
   return (
@@ -19,10 +23,10 @@ const Router: React.FC = () => {
     >
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact component={makeLogin} />
-          <Route path="/signup" exact component={makeSignUp} />
-          <PrivateRoute path="/" exact component={makeSurveyList} />
-          <PrivateRoute path="/surveys" exact component={SurveyResult} />
+          <Route path="/login" exact component={MakeLogin} />
+          <Route path="/signup" exact component={MakeSignUp} />
+          <PrivateRoute path="/" exact component={MakeSurveyList} />
+          <PrivateRoute path="/surveys/:id" component={MakeSurveyResult} />
         </Switch>
       </BrowserRouter>
     </APIContext.Provider>
