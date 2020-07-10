@@ -1,3 +1,5 @@
+@import '../../styles/animations.scss';
+
 .surveyResult {
   display: flex;
   flex-direction: column;
@@ -12,6 +14,69 @@
     width: 100%;
     flex-grow: 1;
     padding: 40px;
+
+    &:empty {
+      position: relative;
+      overflow: hidden;
+      background-repeat: no-repeat;
+      background-image: linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        ),
+        linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        ),
+        linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        ),
+        linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        ),
+        linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        ),
+        linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        ),
+        linear-gradient(
+          to right,
+          rgba(160, 164, 168, 0.3),
+          rgba(160, 164, 168, 0.3)
+        );
+      background-position: 40px 40px, 136px 50px, 136px 80px, 136px 110px,
+        40px 172px, 40px 270px, 40px 372px;
+      background-size: 80px 100px, calc(100% - 176px) 20px,
+        calc(80% - 176px) 20px, calc(80% - 176px) 20px, calc(100% - 80px) 82px,
+        calc(100% - 80px) 82px, calc(100% - 80px) 82px;
+
+      &::after {
+        animation: shimmer 1.2s infinite;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background-image: linear-gradient(
+          to right,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+      }
+    }
 
     .question {
       display: flex;
@@ -73,9 +138,30 @@
 @media only screen and (max-width: 400px) {
   .surveyResult {
     .content {
-      ul {
+      .question {
+        h2 {
+          font-size: 20px;
+        }
+
+        .calendar {
+          width: 60px;
+        }
+      }
+
+      .answersList {
         li {
-          justify-content: center;
+          img {
+            width: 40px;
+            height: 40px;
+          }
+
+          .answer {
+            font-size: 16px;
+          }
+
+          .percent {
+            font-size: 20px;
+          }
         }
       }
     }

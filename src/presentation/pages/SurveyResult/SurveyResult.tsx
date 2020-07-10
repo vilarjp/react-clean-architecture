@@ -1,6 +1,12 @@
 import React from 'react'
 import FlipMove from 'react-flip-move'
-import { Header, Footer, Loading, Calendar } from '@/presentation/components'
+import {
+  Header,
+  Footer,
+  Loading,
+  Calendar,
+  Button
+} from '@/presentation/components'
 import Styles from './SurveyResult-styles.scss'
 
 const SurveyResult: React.FC = () => {
@@ -13,32 +19,34 @@ const SurveyResult: React.FC = () => {
           <h2>Pergunta 1?</h2>
         </div>
         <FlipMove className={Styles.answersList}>
-          <li>
-            <img
-              src="http://fordevs.herokuapp.com/static/img/logo-react.png"
-              alt="survey"
-            />
-            <span className={Styles.answer}>Resposta</span>
-            <span className={Styles.percent}>50%</span>
-          </li>
-          <li className={Styles.active}>
-            <img
-              src="http://fordevs.herokuapp.com/static/img/logo-react.png"
-              alt="survey"
-            />
-            <span className={Styles.answer}>Resposta</span>
-            <span className={Styles.percent}>50%</span>
-          </li>
-          <li>
-            <img
-              src="http://fordevs.herokuapp.com/static/img/logo-react.png"
-              alt="survey"
-            />
-            <span className={Styles.answer}>Resposta</span>
-            <span className={Styles.percent}>50%</span>
-          </li>
+          <ul>
+            <li>
+              <img
+                src="http://fordevs.herokuapp.com/static/img/logo-react.png"
+                alt="survey"
+              />
+              <span className={Styles.answer}>Resposta</span>
+              <span className={Styles.percent}>50%</span>
+            </li>
+            <li className={Styles.active}>
+              <img
+                src="http://fordevs.herokuapp.com/static/img/logo-react.png"
+                alt="survey"
+              />
+              <span className={Styles.answer}>Resposta</span>
+              <span className={Styles.percent}>50%</span>
+            </li>
+            <li>
+              <img
+                src="http://fordevs.herokuapp.com/static/img/logo-react.png"
+                alt="survey"
+              />
+              <span className={Styles.answer}>Resposta</span>
+              <span className={Styles.percent}>50%</span>
+            </li>
+          </ul>
         </FlipMove>
-        <button type="button">Voltar</button>
+        <Button type="button">Voltar</Button>
         {false && <Loading />}
       </div>
       <Footer />
