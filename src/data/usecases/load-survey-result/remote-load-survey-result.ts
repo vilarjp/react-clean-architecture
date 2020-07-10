@@ -11,9 +11,12 @@ export class RemoteLoadSurveyResult implements LoadSurveyResult {
 
   async load(): Promise<SurveyResultModel> {
     const httpResponse = await this.httpGetClient.get({ url: this.url })
+    const surveyResult = httpResponse.body
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        return httpResponse.body || {}
+        if (surveyResult?.date)
+          return { ...surveyResult, date: new Date(surveyResult.date) }
+        return {} as SurveyResultModel
       case HttpStatusCode.forbidden:
         throw new AccessDeniedError()
       default:

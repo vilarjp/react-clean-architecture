@@ -46,12 +46,16 @@
 
   footer {
     background: var(--primary);
-    color: var(--black);
-    line-height: 40px;
-    text-transform: lowercase;
     text-align: center;
     border-radius: 0px 0px 8px 8px;
-    cursor: pointer;
+
+    a {
+      text-decoration: none;
+      line-height: 40px;
+      text-transform: lowercase;
+      color: var(--black);
+      display: block;
+    }
 
     &:hover {
       background: var(--primaryDark);
