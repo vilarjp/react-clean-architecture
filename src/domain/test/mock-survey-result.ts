@@ -1,5 +1,6 @@
 import faker from 'faker'
 import { SurveyResultModel } from '@/domain/models'
+import { LoadSurveyResult } from '../usecases'
 
 export const mockSurveyResultModel = (): SurveyResultModel => ({
   question: faker.random.words(10),
@@ -20,3 +21,14 @@ export const mockSurveyResultModel = (): SurveyResultModel => ({
     }
   ]
 })
+
+export class LoadSurveyResultSpy implements LoadSurveyResult {
+  callsCount = 0
+
+  survey = mockSurveyResultModel()
+
+  async load(): Promise<SurveyResultModel> {
+    this.callsCount += 1
+    return this.survey
+  }
+}
