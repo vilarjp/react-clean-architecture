@@ -51,18 +51,18 @@ describe('SurveyResult', () => {
     cy.getByTestId('username').should('contain.text', name)
   })
 
-  // it('should logout on click logout-button', () => {
-  //   cy.route({
-  //     method: 'GET',
-  //     url: path,
-  //     status: 500,
-  //     response: {}
-  //   })
-  //   cy.visit('/')
-  //   cy.getByTestId('logout-button').click()
-  //   Helper.testUrl('/login')
-  //   Helper.testLocalStorageItemIsNull('account')
-  // })
+  it('should logout on click logout-button', () => {
+    cy.route({
+      method: 'GET',
+      url: path,
+      status: 500,
+      response: {}
+    })
+    cy.visit('/surveys/any_id')
+    cy.getByTestId('logout-button').click()
+    Helper.testUrl('/login')
+    Helper.testLocalStorageItemIsNull('account')
+  })
 
   // it('should present survey cards', () => {
   //   cy.route({
