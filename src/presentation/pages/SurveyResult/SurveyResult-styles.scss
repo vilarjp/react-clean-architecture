@@ -56,36 +56,6 @@
         }
       }
     }
-
-    .loadingWrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(#fff, 0.7);
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      cursor: wait;
-
-      .loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(#e5e5e5, 0.8);
-        width: 300px;
-        height: 150px;
-        border-radius: 8px;
-
-        span {
-          font-size: 16px;
-          font-weight: bold;
-          margin-bottom: 10px;
-        }
-      }
-    }
   }
 }
 
