@@ -38,18 +38,18 @@ describe('SurveyResult', () => {
     Helper.testUrl('/login')
   })
 
-  // it('should present correct username', () => {
-  //   cy.route({
-  //     method: 'GET',
-  //     url: path,
-  //     status: 500,
-  //     response: {}
-  //   })
-  //   cy.visit('/')
-  //   const { name } = Helper.getLocalStorageItem('account')
+  it('should present correct username', () => {
+    cy.route({
+      method: 'GET',
+      url: path,
+      status: 500,
+      response: {}
+    })
+    cy.visit('/surveys/any_id')
+    const { name } = Helper.getLocalStorageItem('account')
 
-  //   cy.getByTestId('username').should('contain.text', name)
-  // })
+    cy.getByTestId('username').should('contain.text', name)
+  })
 
   // it('should logout on click logout-button', () => {
   //   cy.route({
