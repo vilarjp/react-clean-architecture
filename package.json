@@ -80,6 +80,7 @@
     "npm-check": "^5.9.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-flip-move": "^3.0.4",
     "react-icons": "^3.10.0",
     "react-router-dom": "^5.2.0"
   }
