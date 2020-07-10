@@ -10,6 +10,7 @@ import {
 } from '@/presentation/components'
 import { SurveyResultModel } from '@/domain/models'
 import { LoadSurveyResult } from '@/domain/usecases'
+import { useErrorHandler } from '@/presentation/hooks'
 import Styles from './SurveyResult-styles.scss'
 
 type Props = {
@@ -22,6 +23,9 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
     error: '',
     surveyResult: null as SurveyResultModel
   })
+  const handleError = useErrorHandler((error: Error) => {
+    setState({ ...state, error: error.message })
+  })
 
   useEffect(() => {
     loadSurveyResult
@@ -29,7 +33,8 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
       .then(response =>
         setState(prevState => ({ ...prevState, surveyResult: response }))
       )
-      .catch()
+      .catch(handleError)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadSurveyResult])
 
   return (

@@ -6,15 +6,14 @@ import {
   LoadSurveyResultSpy,
   mockSurveyResultModel
 } from '@/domain/test'
+import { UnexpectedError } from '@/domain/errors'
 import SurveyResult from './SurveyResult'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
 }
 
-const makeSut = (survey = mockSurveyResultModel()): SutTypes => {
-  const loadSurveyResultSpy = new LoadSurveyResultSpy()
-  loadSurveyResultSpy.survey = survey
+const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
   render(
     <APIContext.Provider
       value={{
@@ -48,10 +47,12 @@ describe('SurveyResult', () => {
   })
 
   it('should present SurveyResult data on success', async () => {
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
     const survey = Object.assign(mockSurveyResultModel(), {
       date: new Date('2020-01-10T00:00:00')
     })
-    makeSut(survey)
+    loadSurveyResultSpy.survey = survey
+    makeSut(loadSurveyResultSpy)
     await waitFor(() => screen.getByTestId('survey-result'))
     expect(screen.getByTestId('day')).toHaveTextContent('10')
     expect(screen.getByTestId('month')).toHaveTextContent('jan')
@@ -71,5 +72,16 @@ describe('SurveyResult', () => {
     const percents = screen.queryAllByTestId('percent')
     expect(percents[0]).toHaveTextContent(`${survey.answers[0].percent}%`)
     expect(percents[1]).toHaveTextContent(`${survey.answers[1].percent}%`)
+  })
+
+  it('should render error on SurveyResult failure', async () => {
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+    const error = new UnexpectedError()
+    jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
+    makeSut(loadSurveyResultSpy)
+    await waitFor(() => screen.getByTestId('survey-result'))
+    expect(screen.queryByTestId('question')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+    expect(screen.getByTestId('error')).toHaveTextContent(error.message)
   })
 })
