@@ -4,13 +4,13 @@
   "answers": [
     {
       "image": "any_image",
-      "answer": "any_answer",
+      "answer": "any_answer_1",
       "count": 2,
       "percent": 50,
       "isCurrentAccountAnswer": true
     },
     {
-      "answer": "any_answer",
+      "answer": "any_answer_2",
       "count": 1,
       "percent": 100,
       "isCurrentAccountAnswer": false
