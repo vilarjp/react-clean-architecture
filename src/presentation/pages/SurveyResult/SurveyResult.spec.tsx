@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { APIContext } from '@/presentation/contexts'
@@ -19,7 +19,10 @@ type SutTypes = {
 }
 
 const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
-  const history = createMemoryHistory({ initialEntries: ['/'] })
+  const history = createMemoryHistory({
+    initialEntries: ['/', '/surveys/any_id'],
+    initialIndex: 1
+  })
   const saveCurrentAccountMock = jest.fn()
   const getCurrentAccountMock = () => mockAccountModel()
   render(
@@ -106,5 +109,12 @@ describe('SurveyResult', () => {
     await waitFor(() => screen.getByTestId('survey-result'))
     expect(saveCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  it('should go back on click back button', async () => {
+    const { history } = makeSut()
+    await waitFor(() => screen.getByTestId('survey-result'))
+    fireEvent.click(screen.getByTestId('button-wrap'))
+    expect(history.location.pathname).toBe('/')
   })
 })
