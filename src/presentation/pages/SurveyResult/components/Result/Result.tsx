@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import FlipMove from 'react-flip-move'
 import { Calendar, Button } from '@/presentation/components'
 import { SurveyResultModel } from '@/domain/models'
+import Answer from '../Answer/Answer'
 import Styles from './Result-styles.scss'
 
 type Props = {
@@ -21,25 +22,7 @@ const Result: React.FC<Props> = ({ surveyResult }: Props) => {
       <FlipMove className={Styles.answersList}>
         <ul data-testid="answers">
           {surveyResult.answers.map(answer => (
-            <li
-              data-testid="answer-wrap"
-              key={answer.answer}
-              className={answer.isCurrentAccountAnswer ? Styles.active : ''}
-            >
-              {answer.image && (
-                <img
-                  data-testid="image"
-                  src={answer.image}
-                  alt={answer.answer}
-                />
-              )}
-              <span data-testid="answer" className={Styles.answer}>
-                {answer.answer}
-              </span>
-              <span data-testid="percent" className={Styles.percent}>
-                {answer.percent}%
-              </span>
-            </li>
+            <Answer key={answer.answer} answer={answer} />
           ))}
         </ul>
       </FlipMove>
