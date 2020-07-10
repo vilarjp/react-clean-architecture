@@ -76,6 +76,10 @@ describe('SurveyResult', () => {
     cy.getByTestId('day').should('have.text', '03')
     cy.getByTestId('month').should('have.text', 'fev')
     cy.getByTestId('year').should('have.text', '2018')
+
+    cy.getByTestId('answer-wrap')
+      .first()
+      .should('have.css', 'box-shadow', 'rgb(247, 127, 0) 0px 0px 3px 2px')
     cy.get('li:nth-child(1)').then(li => {
       assert.equal(li.find('[data-testid="answer"]').text(), 'any_answer_1')
       assert.equal(li.find('[data-testid="image"]').attr('src'), 'any_image')
@@ -86,5 +90,18 @@ describe('SurveyResult', () => {
       assert.notExists(li.find('[data-testid="image"]'))
       assert.equal(li.find('[data-testid="percent"]').text(), '100%')
     })
+  })
+
+  it('should return to previous url on click back button', () => {
+    cy.visit('')
+    cy.route({
+      method: 'GET',
+      url: path,
+      status: 200,
+      response: 'fixture:survey-result.json'
+    })
+    cy.visit('/surveys/any_id')
+    cy.getByTestId('button-wrap').click()
+    Helper.testUrl('/')
   })
 })

@@ -12,7 +12,7 @@ type Props = {
 }
 
 const Answer: React.FC<Props> = ({ answer }: Props) => {
-  const isActive = answer.isCurrentAccountAnswer ? 'active' : ''
+  const isActive = answer.isCurrentAccountAnswer ? Styles.active : ''
   return (
     <li
       data-testid="answer-wrap"
