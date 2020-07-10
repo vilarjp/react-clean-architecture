@@ -112,6 +112,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           <Button
             type="submit"
             disabled={state.isFormInvalid}
+            loading={state.loading}
             className={Styles.buttonWrapper}
           >
             Entrar

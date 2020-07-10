@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Footer, Header } from '@/presentation/components'
+import { Footer, Header, Error } from '@/presentation/components'
 import { LoadSurveyList } from '@/domain/usecases'
 import { SurveyModel } from '@/domain/models'
 import { useErrorHandler } from '@/presentation/hooks'
 import List from './components/List/List'
-import Error from './components/Error/Error'
 import SurveyContext from './context/SurveyContext'
 
 import Styles from './SurveyList-styles.scss'
@@ -36,7 +35,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
       <div className={Styles.content}>
         <h2>Paradas</h2>
         <SurveyContext.Provider value={{ state, setState }}>
-          {state.error ? <Error /> : <List />}
+          {state.error ? <Error error={state.error} /> : <List />}
         </SurveyContext.Provider>
       </div>
       <Footer />

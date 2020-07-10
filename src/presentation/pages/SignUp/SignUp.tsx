@@ -159,6 +159,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
             type="submit"
             className={Styles.buttonWrapper}
             disabled={state.isFormInvalid}
+            loading={state.loading}
           >
             Criar
           </Button>
