@@ -1,46 +1,25 @@
 /* eslint-disable max-classes-per-file */
 import {
-  HttpPostParams,
-  HttpPostClient,
+  HttpRequest,
+  HttpClient,
   HttpResponse,
-  HttpStatusCode,
-  HttpGetClient,
-  HttpGetParams
+  HttpStatusCode
 } from '@/data/protocols/http'
 import faker from 'faker'
 
-export const mockPostRequest = (): HttpPostParams<any> => ({
+export const mockHttpRequest = (): HttpRequest => ({
   url: faker.internet.url(),
-  body: faker.random.objectElement()
-})
-
-export const mockGetRequest = (): HttpGetParams => ({
-  url: faker.internet.url(),
+  method: faker.random.arrayElement(['get', 'post', 'put', 'delete']),
+  body: faker.random.objectElement(),
   headers: faker.random.objectElement()
 })
 
-export class HttpPostClientSpy<BodyType = any, ReponseType = any>
-  implements HttpPostClient<BodyType, ReponseType> {
+export class HttpClientSpy implements HttpClient {
   url?: string
 
-  body?: BodyType
+  method?: string
 
-  response: HttpResponse<ReponseType> = {
-    statusCode: HttpStatusCode.ok
-  }
-
-  async post(
-    params: HttpPostParams<BodyType>
-  ): Promise<HttpResponse<ReponseType>> {
-    this.url = params.url
-    this.body = params.body
-    return Promise.resolve(this.response)
-  }
-}
-
-export class HttpGetClientSpy<ReponseType = any>
-  implements HttpGetClient<ReponseType> {
-  url: string
+  body?: any
 
   headers?: any
 
@@ -48,8 +27,10 @@ export class HttpGetClientSpy<ReponseType = any>
     statusCode: HttpStatusCode.ok
   }
 
-  async get(params: HttpGetParams): Promise<HttpResponse> {
+  async request(params: HttpRequest): Promise<any> {
     this.url = params.url
+    this.method = params.method
+    this.body = params.body
     this.headers = params.headers
     return Promise.resolve(this.response)
   }
