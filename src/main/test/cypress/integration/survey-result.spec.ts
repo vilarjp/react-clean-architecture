@@ -27,16 +27,16 @@ describe('SurveyResult', () => {
     )
   })
 
-  // it('should logout on AccessDeniedError', () => {
-  //   cy.route({
-  //     method: 'GET',
-  //     url: path,
-  //     status: 403,
-  //     response: {}
-  //   })
-  //   cy.visit('/')
-  //   Helper.testUrl('/login')
-  // })
+  it('should logout on AccessDeniedError', () => {
+    cy.route({
+      method: 'GET',
+      url: path,
+      status: 403,
+      response: {}
+    })
+    cy.visit('/surveys/any_id')
+    Helper.testUrl('/login')
+  })
 
   // it('should present correct username', () => {
   //   cy.route({
