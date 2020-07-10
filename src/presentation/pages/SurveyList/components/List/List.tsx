@@ -1,18 +1,18 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { SurveyModel } from '@/domain/models'
 import Styles from './List-styles.scss'
 import SurveyCard from '../SurveyCard/SurveyCard'
 import SurveyCardLoading from '../SurveyCardLoading/SurveyCardLoading'
 
-import SurveyContext from '../../context/SurveyContext'
+type Props = {
+  surveys: SurveyModel[]
+}
 
-const List: React.FC = () => {
-  const { state } = useContext(SurveyContext)
-
+const List: React.FC<Props> = ({ surveys }: Props) => {
   return (
     <ul className={Styles.list} data-testid="survey-list">
-      {state.surveys.length ? (
-        state.surveys.map((survey: SurveyModel) => (
+      {surveys.length ? (
+        surveys.map((survey: SurveyModel) => (
           <SurveyCard key={survey.id} survey={survey} />
         ))
       ) : (
