@@ -1,6 +1,5 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import FlipMove from 'react-flip-move'
 import { Calendar, Button } from '@/presentation/components'
 import { SurveyResultModel } from '@/domain/models'
 import Answer from '../Answer/Answer'
@@ -19,13 +18,14 @@ const Result: React.FC<Props> = ({ surveyResult }: Props) => {
         <Calendar date={surveyResult.date} className={Styles.calendar} />
         <h2 data-testid="question">{surveyResult.question}</h2>
       </div>
-      <FlipMove className={Styles.answersList}>
-        <ul data-testid="answers">
-          {surveyResult.answers.map(answer => (
-            <Answer key={answer.answer} answer={answer} />
-          ))}
-        </ul>
-      </FlipMove>
+
+      <ul data-testid="answers" className={Styles.answersList}>
+        {surveyResult.answers.map((answer, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Answer key={index} answer={answer} />
+        ))}
+      </ul>
+
       <Button type="button" onClick={goBack}>
         Voltar
       </Button>

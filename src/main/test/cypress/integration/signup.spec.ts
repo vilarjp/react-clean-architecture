@@ -1,8 +1,12 @@
 import faker from 'faker'
 import * as FormHelper from '../utils/form-helper'
 import * as Helper from '../utils/helpers'
+import * as Http from '../utils/http-mocks'
 
 const path = /signup/
+const mockEmailInUseError = (): void => Http.mockForbiddenError(path, 'POST')
+const mockUnexpectedError = (): void => Http.mockServerError(path, 'POST')
+const mockSuccess = (): void => Http.mockOk(path, 'POST', 'fx:account')
 
 const populateValidFields = (): void => {
   FormHelper.testFieldState('name', faker.name.findName())
@@ -54,15 +58,7 @@ describe('SignUp', () => {
   })
 
   it('should display error modal if addaccount fails', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 403,
-      delay: 500,
-      response: {
-        error: faker.random.words()
-      }
-    })
+    mockEmailInUseError()
 
     populateValidFields()
 
@@ -73,17 +69,7 @@ describe('SignUp', () => {
   })
 
   it('should save account and redirects user if addaccount succeeds', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 200,
-      delay: 500,
-      response: {
-        accessToken: faker.random.uuid(),
-        name: faker.name.findName()
-      }
-    })
-
+    mockSuccess()
     populateValidFields()
 
     FormHelper.testButtonIsLoading('button-wrap', true)
@@ -92,13 +78,7 @@ describe('SignUp', () => {
   })
 
   it('should show modal error if unknow error occours', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 500,
-      delay: 500,
-      response: {}
-    })
+    mockUnexpectedError()
 
     populateValidFields()
 
@@ -112,15 +92,7 @@ describe('SignUp', () => {
   })
 
   it('should submit form if press enter', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 200,
-      response: {
-        accessToken: faker.random.uuid(),
-        name: faker.name.findName()
-      }
-    })
+    mockSuccess()
 
     populateValidFields()
 
@@ -130,17 +102,12 @@ describe('SignUp', () => {
   })
 
   it('should prevent multiple submits', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 200,
-      response: {}
-    }).as('signupRequest')
+    mockSuccess()
 
     populateValidFields()
 
     cy.getByTestId('button-wrap').dblclick()
-    cy.wait('@signupRequest')
-    cy.get('@signupRequest.all').should('have.length', 1)
+    cy.wait('@request')
+    cy.get('@request.all').should('have.length', 1)
   })
 })

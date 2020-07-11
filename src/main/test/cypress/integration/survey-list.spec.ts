@@ -1,7 +1,11 @@
 import faker from 'faker'
 import * as Helper from '../utils/helpers'
+import * as Http from '../utils/http-mocks'
 
 const path = /surveys/
+const mockUnexpectedError = (): void => Http.mockServerError(path, 'GET')
+const mockAccessDeniedError = (): void => Http.mockForbiddenError(path, 'GET')
+const mockSuccess = (): void => Http.mockOk(path, 'GET', 'fx:survey-list')
 
 describe('SurveyList', () => {
   beforeEach(() => {
@@ -13,12 +17,7 @@ describe('SurveyList', () => {
   })
 
   it('should present error if UnexpectedError', () => {
-    cy.route({
-      method: 'GET',
-      url: path,
-      status: 500,
-      response: {}
-    })
+    mockUnexpectedError()
     cy.visit('/')
 
     cy.getByTestId('error').should(
@@ -28,23 +27,13 @@ describe('SurveyList', () => {
   })
 
   it('should logout on AccessDeniedError', () => {
-    cy.route({
-      method: 'GET',
-      url: path,
-      status: 403,
-      response: {}
-    })
+    mockAccessDeniedError()
     cy.visit('/')
     Helper.testUrl('/login')
   })
 
   it('should present correct username', () => {
-    cy.route({
-      method: 'GET',
-      url: path,
-      status: 500,
-      response: {}
-    })
+    mockUnexpectedError()
     cy.visit('/')
     const { name } = Helper.getLocalStorageItem('account')
 
@@ -52,12 +41,7 @@ describe('SurveyList', () => {
   })
 
   it('should logout on click logout-button', () => {
-    cy.route({
-      method: 'GET',
-      url: path,
-      status: 500,
-      response: {}
-    })
+    mockUnexpectedError()
     cy.visit('/')
     cy.getByTestId('logout-button').click()
     Helper.testUrl('/login')
@@ -65,13 +49,7 @@ describe('SurveyList', () => {
   })
 
   it('should present survey cards', () => {
-    cy.route({
-      method: 'GET',
-      url: path,
-      status: 200,
-      delay: 500,
-      response: 'fixture:survey-list.json'
-    })
+    mockSuccess()
     cy.visit('/')
     cy.get('li:empty').should('have.length', 3)
     cy.get('li:not(empty)').should('have.length', 2)

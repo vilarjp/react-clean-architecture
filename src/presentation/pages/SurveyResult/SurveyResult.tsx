@@ -23,15 +23,46 @@ const SurveyResult: React.FC<Props> = ({
     surveyResult: null as SurveyResultModel
   })
   const handleError = useErrorHandler((error: Error) => {
-    setState({ ...state, error: error.message })
+    setState({
+      ...state,
+      error: error.message,
+      surveyResult: null,
+      isLoading: false
+    })
   })
+
+  // const onAnswer = (answer: string) => {
+  //   if (state.isLoading) return
+  //   setState(prevState => ({ ...prevState, isLoading: true }))
+  //   saveSurveyResult
+  //     .save({ answer })
+  //     .then(response =>
+  //       setState(prevState => ({
+  //         ...prevState,
+  //         surveyResult: response,
+  //         isLoading: false
+  //       }))
+  //     )
+  //     .catch(handleError)
+  // }
 
   const onAnswer = useCallback(
     (answer: string) => {
+      if (state.isLoading) return
       setState(prevState => ({ ...prevState, isLoading: true }))
-      saveSurveyResult.save({ answer }).then().catch()
+      saveSurveyResult
+        .save({ answer })
+        .then(response =>
+          setState(prevState => ({
+            ...prevState,
+            surveyResult: response,
+            isLoading: false
+          }))
+        )
+        .catch(handleError)
     },
-    [saveSurveyResult]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [saveSurveyResult, state.isLoading]
   )
 
   useEffect(() => {

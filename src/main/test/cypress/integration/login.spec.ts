@@ -1,12 +1,15 @@
 import faker from 'faker'
 import * as FormHelper from '../utils/form-helper'
 import * as Helper from '../utils/helpers'
+import * as Http from '../utils/http-mocks'
 
 const path = /login/
+const mockInvalidCredentialsError = (): void => Http.mockUnauthorizedError(path)
+const mockUnexpectedError = (): void => Http.mockServerError(path, 'POST')
+const mockSuccess = (): void => Http.mockOk(path, 'POST', 'fx:account')
 
 describe('Login', () => {
   beforeEach(() => {
-    cy.server()
     cy.visit('/login')
   })
 
@@ -40,16 +43,7 @@ describe('Login', () => {
   })
 
   it('should display error modal if authentication fails', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 401,
-      delay: 500,
-      response: {
-        error: faker.random.words()
-      }
-    })
-
+    mockInvalidCredentialsError()
     FormHelper.testFieldState('email', faker.internet.email())
     FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
@@ -59,16 +53,7 @@ describe('Login', () => {
   })
 
   it('should save account and redirects user if authentication succeeds', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 200,
-      delay: 500,
-      response: {
-        accessToken: faker.random.uuid(),
-        name: faker.name.findName()
-      }
-    })
+    mockSuccess()
 
     FormHelper.testFieldState('email', faker.internet.email())
     FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
@@ -79,14 +64,7 @@ describe('Login', () => {
   })
 
   it('should show modal error if unknow error occours', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 500,
-      delay: 500,
-      response: {}
-    })
-
+    mockUnexpectedError()
     FormHelper.testFieldState('email', faker.internet.email())
     FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
@@ -99,15 +77,7 @@ describe('Login', () => {
   })
 
   it('should submit form if press enter', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 200,
-      response: {
-        accessToken: faker.random.uuid(),
-        name: faker.name.findName()
-      }
-    }).as('loginRequest')
+    mockSuccess()
 
     FormHelper.testFieldState('email', faker.internet.email())
     FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
@@ -118,18 +88,13 @@ describe('Login', () => {
   })
 
   it('should prevent multiple submits', () => {
-    cy.route({
-      method: 'POST',
-      url: path,
-      status: 200,
-      response: {}
-    }).as('loginRequest')
+    mockSuccess()
 
     FormHelper.testFieldState('email', faker.internet.email())
     FormHelper.testFieldState('password', faker.random.alphaNumeric(5))
 
     cy.getByTestId('button-wrap').dblclick()
-    cy.wait('@loginRequest')
-    cy.get('@loginRequest.all').should('have.length', 1)
+    cy.wait('@request')
+    cy.get('@request.all').should('have.length', 1)
   })
 })
