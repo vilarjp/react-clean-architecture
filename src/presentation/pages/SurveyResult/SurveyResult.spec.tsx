@@ -117,4 +117,12 @@ describe('SurveyResult', () => {
     fireEvent.click(screen.getByTestId('button-wrap'))
     expect(history.location.pathname).toBe('/')
   })
+
+  it('should not present loading on active answer click', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('survey-result'))
+    const answers = screen.getAllByTestId('answer-wrap')
+    fireEvent.click(answers[0])
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+  })
 })
