@@ -1,6 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import faker from 'faker'
 import { SurveyResultModel } from '@/domain/models'
-import { LoadSurveyResult, SaveSurveyResultParams } from '../usecases'
+import {
+  LoadSurveyResult,
+  SaveSurveyResultParams,
+  SaveSurveyResult
+} from '../usecases'
 
 export const mockSurveySaveResulParams = (): SaveSurveyResultParams => ({
   answer: faker.random.words(5)
@@ -33,6 +38,17 @@ export class LoadSurveyResultSpy implements LoadSurveyResult {
 
   async load(): Promise<SurveyResultModel> {
     this.callsCount += 1
+    return this.survey
+  }
+}
+
+export class SaveSurveyResultSpy implements SaveSurveyResult {
+  params: SaveSurveyResultParams
+
+  survey = mockSurveyResultModel()
+
+  async save(params: SaveSurveyResultParams): Promise<SurveyResultModel> {
+    this.params = params
     return this.survey
   }
 }
