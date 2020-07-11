@@ -46,16 +46,10 @@
 - TDD
 - Clean Architecture
 - DDD
-- Reactive Programming
-- Responsive Layout
 - Conventional Commits
 - GitFlow
-- Modular Design
-- Dependency Diagrams
 - Use Cases
-- Continuous Integration
-- Continuous Delivery
-- Continuous Deployment
+- CI/CD
 
 > ## Bibliotecas e Ferramentas
 
@@ -66,18 +60,16 @@
 - Cypress
 - Jest
 - Axios
-- Git
 - Webpack
-- SASS + Animations
-- NPM
+- SASS
+- Yarn
 - Travis CI
 - Faker
 - Coveralls
 - Husky
 - Lint Staged
 - Eslint
-- Standard Javascript Style
-- React Flip Move
+- Airbnb Javascript Style
 
 > ## Features do React
 
@@ -86,7 +78,6 @@
 - UseContext
 - UseEffect
 - UseHistory
-- UseRef
 - UseParams
 - Custom Hooks
 - Router
@@ -94,26 +85,14 @@
 
 > ## Features do Typescript
 
-- POO Avançado
+- POO
 - Interface
 - Type Alias
-- Namespace
 - Module
-- Utility Types
-- Modularização de Paths
-- Build
-- Deploy
 - Generics
 
 > ## Features de Testes
 
 - Testes Unitários
-- Testes de Integração
 - Testes e2e
 - Cobertura de Testes
-- Test Doubles
-- Mocks
-- Stubs
-- Spies
-- Fakes
-- Dummies
